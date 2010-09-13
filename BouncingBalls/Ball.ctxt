@@ -1,0 +1,20 @@
+#BlueJ class context
+comment0.target=Ball()
+comment1.params=immovable
+comment1.target=Ball(boolean)
+comment10.target=ArrayList<Ball>\ getIntersectingBalls()
+comment11.target=void\ checkBallCollisions()
+comment12.target=void\ addGravity()
+comment2.params=velX\ velY
+comment2.target=Ball(double,\ double)
+comment3.params=w
+comment3.target=void\ addedToWorld(World)
+comment4.target=Vector\ getVelocity()
+comment5.params=vel
+comment5.target=void\ setVelocity(Vector)
+comment6.target=void\ act()
+comment7.target=void\ move()
+comment8.target=void\ checkCollisions()
+comment9.target=void\ checkWallCollisions()
+comment9.text=\nReflect\ the\ velocity\ when\ the\ ball\ is\ out\ of\ bounds.\nMultiply\ the\ velocity\ by\ the\ sign\ of\ the\ difference\ between\ the\ position\nvector\ and\ the\ upper\ left\ bound\ vector,\ and\ multiply\ the\ velocity\ vector\nby\ the\ sign\ of\ the\ difference\ between\ the\ lower\ right\ bound\ vector\ and\ the\nposition\ vector.\nThe\ sign\ of\ a\ vector\ is\ the\ vector\ whose\ coordinates\ are\ -1\ or\ 1\ depending\non\ the\ signs\ of\ the\ coordinates\ of\ the\ vector.\ See\ Vector.sign().\n\n
+numComments=13
