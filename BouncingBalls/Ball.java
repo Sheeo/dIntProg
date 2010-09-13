@@ -12,11 +12,13 @@ public class Ball extends VectorActor
 	final int radius;
 	private Vector vel;
 	private Vector canvasSize;
+	protected boolean hasMoved;
 	/**
 	 * The bounds of the ball's position vector.
 	 */
 	private Vector upperLeftBound;
 	private Vector lowerRightBound;
+	
 	public Ball() {
 		this(3,2);
 	}
@@ -35,18 +37,17 @@ public class Ball extends VectorActor
 	public void setVelocity(Vector vel) {
 		this.vel = vel;
 	}
-	private boolean hasMoved;
 	public void act() {
 		if (!hasMoved) {
-			move();
-			hasMoved = true;
+		 	move();
+		 	hasMoved = true;
 		} else {
 			checkCollisions();
-			addGravity();
-			hasMoved = false;
+		 	addGravity();
+		 	hasMoved = false;
 		}
 	}
-	private void move() {
+	protected void move() {
 		moveBy(vel);
 		setLocation(getLocation().clamp(upperLeftBound, lowerRightBound));
 	}
@@ -63,7 +64,7 @@ public class Ball extends VectorActor
 	 * The sign of a vector is the vector whose coordinates are -1 or 1 depending
 	 * on the signs of the coordinates of the vector. See Vector.sign().
 	 */
-	private void checkWallCollisions() {
+	protected void checkWallCollisions() {
 		// god I miss operator overloading
 		vel = vel.scale(upperLeftBound.subtract(getLocation()).sign())
 		         .scale(getLocation().subtract(lowerRightBound).sign());
@@ -103,7 +104,7 @@ public class Ball extends VectorActor
 		vel = mirrored;
 	}
 
-	private void addGravity() {
+	protected void addGravity() {
 		BallWorld world = (BallWorld) getWorld();
 		vel = vel.add(world.getGravity());
 	}
