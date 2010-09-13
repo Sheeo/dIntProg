@@ -1,7 +1,0 @@
-#BlueJ class context
-comment0.target=Vector\ getLocation()
-comment1.params=vector
-comment1.target=void\ setLocation(Vector)
-comment2.params=vector
-comment2.target=void\ moveBy(Vector)
-numComments=3
