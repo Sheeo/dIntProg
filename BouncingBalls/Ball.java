@@ -11,7 +11,6 @@ public class Ball extends VectorActor
 {
 	final int radius;
 	private Vector vel;
-	private Vector cachedVelocity;
 	private Vector canvasSize;
 	/**
 	 * The bounds of the ball's position vector.
@@ -31,8 +30,6 @@ public class Ball extends VectorActor
 		lowerRightBound = canvasSize.subtract(new Vector(radius));
 	}
 	public Vector getVelocity() {
-		if (cachedVelocity != null)
-			return cachedVelocity;
 		return vel;
 	}
 	public void setVelocity(Vector vel) {
@@ -41,12 +38,9 @@ public class Ball extends VectorActor
 	private boolean hasMoved;
 	public void act() {
 		if (!hasMoved) {
-			vel = cachedVelocity;
-			cachedVelocity = null;
 			move();
 			hasMoved = true;
 		} else {
-			cachedVelocity = vel;
 			checkCollisions();
 			addGravity();
 			hasMoved = false;
@@ -84,7 +78,7 @@ public class Ball extends VectorActor
 			if (dist > radius*2) {
 				continue;
 			}
-			double nextdist = b.getLocation().add(b.getVelocity()).subtract(getLocation().add(vel)).length();
+			double nextdist = b.getLocation().subtract(getLocation().add(vel)).length();
 			if (nextdist > dist) {
 				// we're moving away from the ball
 				// pretend we're not intersecting it
