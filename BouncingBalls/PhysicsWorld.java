@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.Random;
+import java.util.List;
 
 /**
  * A world of highly realistic physics.
@@ -29,5 +30,21 @@ public class PhysicsWorld extends World
 	public Vector getGravity() {
 		return gravity;
 	}
+	public void act() {
+		List objs = getObjects(ShapeActor.class);
+		for (Object o : objs) {
+			//ShapeActor a = (ShapeActor) o;
+			Ball a = (Ball) o;
+			a.checkCollisions();
+			addGravity(a);
+		}
+		for (Object o : objs) {
+			//ShapeActor a = (ShapeActor) o;
+			Ball a = (Ball) o;
+			a.move();
+		}
+	}
+	protected void addGravity(DynamicActor a) {
+		a.setVelocity(a.getVelocity().add(getGravity()));
+	}
 }
-

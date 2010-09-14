@@ -14,13 +14,5 @@ public class UnstoppaBall  extends Ball
      */
     public void act() 
     {
-		if (!hasMoved) {
-		 	move();
-		 	hasMoved = true;
-		} else {
-			checkWallCollisions();
-		 	addGravity();
-		 	hasMoved = false;
-		}
     }    
 }

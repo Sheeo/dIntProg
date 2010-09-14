@@ -29,21 +29,11 @@ public class Ball extends CircularActor implements DynamicActor
 		canvasSize = new Vector(w.getWidth(), w.getHeight());
 		lowerRightBound = canvasSize.subtract(new Vector(radius));
 	}
-	public void act() {
-		if (!hasMoved) {
-		 	move();
-		 	hasMoved = true;
-		} else {
-			checkCollisions();
-		 	addGravity();
-		 	hasMoved = false;
-		}
-	}
-	protected void move() {
+	public void move() {
 		moveBy(vel);
 		setLocation(getLocation().clamp(upperLeftBound, lowerRightBound));
 	}
-	private void checkCollisions() {
+	public void checkCollisions() {
 		checkWallCollisions();
 		checkBallCollisions();
 	}
@@ -102,11 +92,6 @@ public class Ball extends CircularActor implements DynamicActor
 		//System.out.println(this+" intersects "+other);
 		//System.out.println(Math.round(180.0*vel.angle()/Math.PI)+" mirrored by "+Math.round(180.0*normal/Math.PI)+" to "+Math.round(180.0*mirrored.angle()/Math.PI));
 		vel = mirrored;
-	}
-
-	protected void addGravity() {
-		BallWorld world = (BallWorld) getWorld();
-		vel = vel.add(world.getGravity());
 	}
 
 	public Vector getVelocity() {
