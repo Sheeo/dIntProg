@@ -18,7 +18,7 @@ public class BallWorld extends World
 	 */
 	public BallWorld()
 	{	
-		super(640, 480, 1); 
+		super(540, 480, 1); 
 		ballRadius = findRadius();
 		r = new Random();
 		setGravity(Vector.zero());
