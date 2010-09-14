@@ -10,7 +10,7 @@ import java.util.Random;
 public class BallWorld extends World
 {
 	private Random r;
-	private final int ballRadius;
+	private final double ballRadius;
 	private Vector gravity;
 
 	/**
@@ -21,11 +21,11 @@ public class BallWorld extends World
 		super(540, 480, 1); 
 		ballRadius = findRadius();
 		r = new Random();
-		setGravity(Vector.zero());
+		setGravity(new Vector(0.0, 0.3));
 		addBalls(10);
 	}
 
-	private int findRadius() {
+	private double findRadius() {
 		Ball b = new Ball();
 		return b.radius;
 	}
@@ -37,10 +37,10 @@ public class BallWorld extends World
 	}
 
 	public void addBall() {
-		final int lowerX = ballRadius;
-		final int lowerY = ballRadius;
-		final int upperX = getWidth()-ballRadius;
-		final int upperY = getHeight()-ballRadius;
+		final int lowerX = (int) Math.round(ballRadius);
+		final int lowerY = (int) Math.round(ballRadius);
+		final int upperX = getWidth()-(int) Math.round(ballRadius);
+		final int upperY = getHeight()-(int) Math.round(ballRadius);
 		double direction = 2.0*Math.PI*r.nextDouble();
 		double speed = 3.5+r.nextGaussian();
 		addBall(lowerX+r.nextInt(upperX-lowerX), lowerY+r.nextInt(upperY-lowerY), speed*Math.cos(direction), speed*Math.sin(direction));

@@ -7,11 +7,10 @@ import java.util.*;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Ball extends VectorActor
+public class Ball extends CircularActor implements DynamicActor
 {
-	final int radius;
-	private Vector vel;
 	private Vector canvasSize;
+	private Vector vel;
 	protected boolean hasMoved;
 	/**
 	 * The bounds of the ball's position vector.
@@ -24,18 +23,11 @@ public class Ball extends VectorActor
 	}
 	public Ball(double velX, double velY) {
 		vel = new Vector(velX, velY);
-		radius = getImage().getWidth()/2;
 		upperLeftBound = new Vector(radius);
 	}
 	public void addedToWorld(World w) {
 		canvasSize = new Vector(w.getWidth(), w.getHeight());
 		lowerRightBound = canvasSize.subtract(new Vector(radius));
-	}
-	public Vector getVelocity() {
-		return vel;
-	}
-	public void setVelocity(Vector vel) {
-		this.vel = vel;
 	}
 	public void act() {
 		if (!hasMoved) {
@@ -64,10 +56,18 @@ public class Ball extends VectorActor
 	 * The sign of a vector is the vector whose coordinates are -1 or 1 depending
 	 * on the signs of the coordinates of the vector. See Vector.sign().
 	 */
-	protected void checkWallCollisions() {
+	private Vector wallCollision() {
 		// god I miss operator overloading
-		vel = vel.scale(upperLeftBound.subtract(getLocation()).sign())
-		         .scale(getLocation().subtract(lowerRightBound).sign());
+		return upperLeftBound.subtract(getLocation()).sign()
+		.scale(getLocation().subtract(lowerRightBound).sign());
+	}
+	public void hasCollidedWithWall() {
+		vel = vel.scale(wallCollision());
+	}
+	public void checkWallCollisions() {
+		hasCollidedWithWall();
+	}
+	public void hasCollided(ShapeActor other) {
 	}
 
 	private ArrayList<Ball> getIntersectingBalls() {
@@ -107,5 +107,12 @@ public class Ball extends VectorActor
 	protected void addGravity() {
 		BallWorld world = (BallWorld) getWorld();
 		vel = vel.add(world.getGravity());
+	}
+
+	public Vector getVelocity() {
+		return vel;
+	}
+	public void setVelocity(Vector vel) {
+		this.vel = vel;
 	}
 }
