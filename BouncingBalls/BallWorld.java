@@ -7,21 +7,19 @@ import java.util.Random;
  * @author Michael Søndergaard
  * @author Mathias Rav
  */
-public class BallWorld extends World
+public class BallWorld extends PhysicsWorld
 {
 	private Random r;
 	private final double ballRadius;
-	private Vector gravity;
 
 	/**
 	 * Constructor for objects of class BallWorld.
 	 */
 	public BallWorld()
 	{	
-		super(540, 480, 1); 
+		super(540, 480);
 		ballRadius = findRadius();
 		r = new Random();
-		setGravity(new Vector(0.0, 0.3));
 		addBalls(10);
 	}
 
@@ -47,15 +45,5 @@ public class BallWorld extends World
 	}
 	public void addBall(int x, int y, double vX, double vY) {
 		addObject(new Ball(vX, vY), x, y);
-	}
-
-	public void setGravity(Vector v) {
-		gravity = v;
-	}
-	public void setDownwardsGravity(double g) {
-		gravity = new Vector(0, g);
-	}
-	public Vector getGravity() {
-		return gravity;
 	}
 }
