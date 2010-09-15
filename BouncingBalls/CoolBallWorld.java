@@ -2,6 +2,7 @@ class CoolBallWorld extends BallWorld {
 	private int ballID;
 	public CoolBallWorld() {
 		super();
+		setGravity(Vector.zero());
 	}
 	public void addBall() {
 		int vX = 0;

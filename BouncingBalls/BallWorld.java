@@ -21,6 +21,7 @@ public class BallWorld extends PhysicsWorld
 		ballRadius = findRadius();
 		r = new Random();
 		addBalls(10);
+		setGravity(new Vector(0.0, 0.3));
 	}
 
 	private double findRadius() {

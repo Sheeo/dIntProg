@@ -20,7 +20,7 @@ public class PhysicsWorld extends World
 
 	public PhysicsWorld(int width, int height) {
 		super(width, height, 1);
-		setGravity(new Vector(0.0, 0.3));
+		setGravity(Vector.zero());
 	}
 
 	public void setGravity(Vector v) {
