@@ -11,6 +11,7 @@ public class Ball extends CircularActor implements DynamicActor
 {
 	private Vector canvasSize;
 	private Vector vel;
+	private Vector nextVel;
 	protected boolean hasMoved;
 	/**
 	 * The bounds of the ball's position vector.
@@ -18,18 +19,23 @@ public class Ball extends CircularActor implements DynamicActor
 	private Vector upperLeftBound;
 	private Vector lowerRightBound;
 	
-	public Ball() {
-		this(3,2);
-	}
 	public Ball(double velX, double velY) {
 		vel = new Vector(velX, velY);
 		upperLeftBound = new Vector(radius);
+		nextVel = Vector.zero();
+	}
+	public Ball() {
+		this(3,2);
 	}
 	public void addedToWorld(World w) {
 		canvasSize = new Vector(w.getWidth(), w.getHeight());
 		lowerRightBound = canvasSize.subtract(new Vector(radius));
 	}
 	public void move() {
+		if (nextVel != null) {
+			vel = vel.add(nextVel);
+			nextVel = null;
+		}
 		moveBy(vel);
 		setLocation(getLocation().clamp(upperLeftBound, lowerRightBound));
 	}
@@ -70,11 +76,6 @@ public class Ball extends CircularActor implements DynamicActor
 				continue;
 			}
 			double nextdist = b.getLocation().subtract(getLocation().add(vel)).length();
-			if (nextdist > dist) {
-				// we're moving away from the ball
-				// pretend we're not intersecting it
-				continue;
-			}
 			balls.add(b);
 		}
 		return balls;
@@ -87,11 +88,21 @@ public class Ball extends CircularActor implements DynamicActor
 		}
 		// it's gay, balls are touching
 		Ball other = balls.get(0); // only bounce off one
-		double normal = other.getLocation().subtract(getLocation()).orthogonal().angle();
-		Vector mirrored = Vector.fromPolar(2*normal-vel.angle(), other.vel.length());
-		//System.out.println(this+" intersects "+other);
-		//System.out.println(Math.round(180.0*vel.angle()/Math.PI)+" mirrored by "+Math.round(180.0*normal/Math.PI)+" to "+Math.round(180.0*mirrored.angle()/Math.PI));
-		vel = mirrored;
+		Vector normal = other.getLocation().subtract(getLocation());
+		normal = normal.scale(1.0/normal.length());
+		Vector tangent = normal.orthogonal();
+		Vector v1 = getVelocity();
+		Vector v2 = other.getVelocity();
+		//double m1 = getMass();
+		//double m2 = other.getMass();
+		double v1n = v1.dotP(normal);
+		double v2n = v2.dotP(normal);
+		double v1t = v1.dotP(tangent);
+		//double v2t = v2.dotP(tangent);
+
+		//double v1np = v1n*(m1-m2)/(m1+m2)+2.0*m2*v2n/(m1+m2);
+		double v1np = v2n; // for m1 = m2
+		addVelocity(normal.scale(v1np).add(tangent.scale(v1t)).subtract(v1));
 	}
 
 	public Vector getVelocity() {
@@ -99,5 +110,12 @@ public class Ball extends CircularActor implements DynamicActor
 	}
 	public void setVelocity(Vector vel) {
 		this.vel = vel;
+	}
+	public void addVelocity(Vector vel) {
+		if (nextVel == null) {
+			nextVel = vel;
+		} else {
+			nextVel = nextVel.add(vel);
+		}
 	}
 }

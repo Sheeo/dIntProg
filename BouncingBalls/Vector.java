@@ -108,4 +108,8 @@ public class Vector
 	public Vector clamp(Vector lower, Vector upper) {
 		return new Vector(Math.min(Math.max(x(), lower.x()), upper.x()), Math.min(Math.max(y(), lower.y()), upper.y()));
 	}
+
+	public double dotP(Vector v) {
+		return x()*v.x()+y()*v.y();
+	}
 }
