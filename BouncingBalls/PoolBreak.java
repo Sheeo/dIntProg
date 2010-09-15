@@ -1,9 +1,40 @@
+import java.util.*;
 class PoolBreak extends BallWorld {
 	public PoolBreak() {
 		super();
 		setFriction(0.995);
+		reset();
+	}
+	public void reset() {
+		removeObjects(getObjects(Ball.class));
 		addFirstBall();
 		addMoreBalls();
+	}
+	private int acttick;
+	public void act() {
+		super.act();
+		if (acttick < 0) {
+			if (0 == ++acttick) {
+				reset();
+			}
+		} else {
+			acttick = (acttick+1)%100;
+			if (acttick == 0) {
+				double sum = velocitySum();
+				System.out.println("Sum of velocities: "+sum);
+				if (sum < 0.1) {
+					acttick = -300;
+					System.out.println("Reset in "+(-acttick)+" ticks");
+				}
+			}
+		}
+	}
+	private double velocitySum() {
+		List objs = getObjects(Ball.class);
+		double sum = 0.0;
+		for (Object o : objs) 
+			sum += ((Ball) o).getVelocity().length();
+		return sum;
 	}
 	public void addFirstBall() {
 		Vector pos = getSize().scale(new Vector(1.0/16.0, 0.5));
