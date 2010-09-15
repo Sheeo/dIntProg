@@ -10,6 +10,7 @@ import java.util.*;
 public class Ball extends DynamicActor
 {
 	final double radius;
+	public boolean acceptMouse;
 	/**
 	 * The bounds of the ball's position vector.
 	 */
@@ -24,6 +25,37 @@ public class Ball extends DynamicActor
 	}
 	Shape getShape() {
 		return new Circle(getLocation(), radius);
+	}
+
+	public void act() {
+		if (acceptMouse) {handleMouse();}
+	}
+
+	private Vector heldOffset;
+	private void handleMouse() {
+		MouseInfo mouseinfo = Greenfoot.getMouseInfo();
+		Vector mouse = (mouseinfo == null) ? Vector.zero() : new Vector(mouseinfo.getX(), mouseinfo.getY());
+		if (heldOffset == null) {
+			if (Greenfoot.mousePressed(this)) {
+				heldOffset = mouse.subtract(getLocation());
+				System.out.println("Set held offset to "+heldOffset);
+			}
+			return;
+		}
+		if (Greenfoot.mouseClicked(this) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 0)) {
+			//System.out.println("Mouse up");
+			heldOffset = null;
+			return;
+		}
+		if (Greenfoot.mouseDragged(this)) {
+			//System.out.println("Mouse down at "+mouse);
+			Vector moveTo = mouse.subtract(heldOffset);
+			System.out.println("Moving to "+moveTo+" "+mouseinfo);
+			setVelocity(moveTo.subtract(getLocation()));
+		} else {
+			System.out.println("Staying still "+mouseinfo);
+			setVelocity(Vector.zero());
+		}
 	}
 
 	private ArrayList<Ball> getIntersectingBalls() {
