@@ -10,7 +10,7 @@ import java.util.Random;
 public class BallWorld extends PhysicsWorld
 {
 	private Random r;
-	private final double ballRadius;
+	protected final double ballRadius;
 
 	/**
 	 * Constructor for objects of class BallWorld.
