@@ -7,8 +7,9 @@ import java.util.*;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Ball extends CircularActor implements DynamicActor
+public class Ball extends DynamicActor
 {
+	final double radius;
 	private Vector canvasSize;
 	private Vector vel;
 	private Vector nextVel;
@@ -21,11 +22,15 @@ public class Ball extends CircularActor implements DynamicActor
 	
 	public Ball(double velX, double velY) {
 		vel = new Vector(velX, velY);
+		radius = getImage().getWidth()/2.0;
 		upperLeftBound = new Vector(radius);
 		nextVel = Vector.zero();
 	}
 	public Ball() {
 		this(3,2);
+	}
+	Shape getShape() {
+		return new Circle(getWidth(), getHeight(), radius);
 	}
 	public void addedToWorld(World w) {
 		canvasSize = new Vector(w.getWidth(), w.getHeight());

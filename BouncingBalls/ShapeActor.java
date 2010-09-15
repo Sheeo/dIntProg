@@ -1,6 +1,7 @@
 import greenfoot.*;
 abstract class ShapeActor extends Actor {
-	abstract boolean intersects(ShapeActor other);
+	abstract Shape getShape();
+	boolean intersects(ShapeActor other) {return getShape().intersects(other.getShape());}
 	protected Vector size;
 	Vector getSize() {return size;}
 	int getWidth() {return (int) Math.round(size.x());}
