@@ -1,6 +1,7 @@
 class PoolBreak extends BallWorld {
 	public PoolBreak() {
 		super();
+		setFriction(0.995);
 		addFirstBall();
 		addMoreBalls();
 	}

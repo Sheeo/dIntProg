@@ -10,6 +10,7 @@ import java.util.*;
 public class PhysicsWorld extends World
 {
 	protected Vector gravity;
+	protected Double friction;
 	public enum Walls {
 		NORTH, EAST, SOUTH, WEST // CSS order
 	};
@@ -32,6 +33,15 @@ public class PhysicsWorld extends World
 	public Vector getGravity() {
 		return gravity;
 	}
+	public void setFriction(double fric) {
+		friction = fric;
+	}
+	public Double getFriction() {
+		return friction;
+	}
+	public void clearFriction() {
+		friction = null;
+	}
 	public void act() {
 		List objs = getObjects(DynamicActor.class);
 		for (Object o : objs) {
@@ -42,10 +52,15 @@ public class PhysicsWorld extends World
 			DynamicActor a = (DynamicActor) o;
 			checkCollisions(a);
 			addGravity(a);
+			addFriction(a);
 		}
 	}
 	protected void addGravity(DynamicActor a) {
 		a.setVelocity(a.getVelocity().add(getGravity()));
+	}
+	protected void addFriction(DynamicActor a) {
+		if (friction == null) {return;}
+		a.setVelocity(a.getVelocity().scale(friction));
 	}
 	public Vector getSize() {
 		return new Vector(getWidth(), getHeight());
