@@ -10,20 +10,14 @@ import java.util.*;
 public class Ball extends DynamicActor
 {
 	final double radius;
-	private Vector canvasSize;
-	private Vector vel;
-	private Vector lastVel;
-	protected boolean hasMoved;
 	/**
 	 * The bounds of the ball's position vector.
 	 */
-	private Vector upperLeftBound;
-	private Vector lowerRightBound;
-	
 	public Ball(double velX, double velY) {
-		vel = new Vector(velX, velY);
-		radius = getImage().getWidth()/2.0;
-		upperLeftBound = new Vector(radius);
+		super();
+		setVelocity(new Vector(velX, velY));
+		size = new Vector(getImage().getWidth());
+		radius = size.x()/2.0;
 	}
 	public Ball() {
 		this(3,2);
@@ -31,40 +25,9 @@ public class Ball extends DynamicActor
 	Shape getShape() {
 		return new Circle(getWidth(), getHeight(), radius);
 	}
-	public void addedToWorld(World w) {
-		canvasSize = new Vector(w.getWidth(), w.getHeight());
-		lowerRightBound = canvasSize.subtract(new Vector(radius));
-	}
-	public void move() {
-		moveBy(vel);
-		lastVel = vel;
-		setLocation(getLocation().clamp(upperLeftBound, lowerRightBound));
-	}
 	public void checkCollisions() {
 		checkWallCollisions();
 		checkBallCollisions();
-	}
-	/**
-	 * Reflect the velocity when the ball is out of bounds.
-	 * Multiply the velocity by the sign of the difference between the position
-	 * vector and the upper left bound vector, and multiply the velocity vector
-	 * by the sign of the difference between the lower right bound vector and the
-	 * position vector.
-	 * The sign of a vector is the vector whose coordinates are -1 or 1 depending
-	 * on the signs of the coordinates of the vector. See Vector.sign().
-	 */
-	private Vector wallCollision() {
-		// god I miss operator overloading
-		return upperLeftBound.subtract(getLocation()).sign()
-		.scale(getLocation().subtract(lowerRightBound).sign());
-	}
-	public void hasCollidedWithWall() {
-		vel = vel.scale(wallCollision());
-	}
-	public void checkWallCollisions() {
-		hasCollidedWithWall();
-	}
-	public void hasCollided(ShapeActor other) {
 	}
 
 	private ArrayList<Ball> getIntersectingBalls() {
@@ -110,16 +73,4 @@ public class Ball extends DynamicActor
 		addVelocity(normal.scale(v1np).add(tangent.scale(v1t)).subtract(v1));
 	}
 
-	public Vector getVelocity() {
-		return vel;
-	}
-	public Vector getLastVelocity() {
-		return (lastVel == null) ? vel : lastVel;
-	}
-	public void setVelocity(Vector vel) {
-		this.vel = vel;
-	}
-	public void addVelocity(Vector vel) {
-		setVelocity(getVelocity().add(vel));
-	}
 }

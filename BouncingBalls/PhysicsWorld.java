@@ -47,4 +47,7 @@ public class PhysicsWorld extends World
 	protected void addGravity(DynamicActor a) {
 		a.setVelocity(a.getVelocity().add(getGravity()));
 	}
+	public Vector getSize() {
+		return new Vector(getWidth(), getHeight());
+	}
 }
