@@ -12,7 +12,7 @@ public class Ball extends DynamicActor
 	final double radius;
 	private Vector canvasSize;
 	private Vector vel;
-	private Vector nextVel;
+	private Vector lastVel;
 	protected boolean hasMoved;
 	/**
 	 * The bounds of the ball's position vector.
@@ -24,7 +24,6 @@ public class Ball extends DynamicActor
 		vel = new Vector(velX, velY);
 		radius = getImage().getWidth()/2.0;
 		upperLeftBound = new Vector(radius);
-		nextVel = Vector.zero();
 	}
 	public Ball() {
 		this(3,2);
@@ -37,11 +36,8 @@ public class Ball extends DynamicActor
 		lowerRightBound = canvasSize.subtract(new Vector(radius));
 	}
 	public void move() {
-		if (nextVel != null) {
-			vel = vel.add(nextVel);
-			nextVel = null;
-		}
 		moveBy(vel);
+		lastVel = vel;
 		setLocation(getLocation().clamp(upperLeftBound, lowerRightBound));
 	}
 	public void checkCollisions() {
@@ -80,7 +76,7 @@ public class Ball extends DynamicActor
 			if (dist > radius*2) {
 				continue;
 			}
-			double nextdist = b.getLocation().add(b.getVelocity()).subtract(getLocation().add(vel)).length();
+			double nextdist = b.getLocation().add(b.getLastVelocity()).subtract(getLocation().add(getLastVelocity())).length();
 			if (nextdist > dist) {
 				// pretend we don't intersect with the ball
 				continue;
@@ -100,8 +96,8 @@ public class Ball extends DynamicActor
 		Vector normal = other.getLocation().subtract(getLocation());
 		normal = normal.scale(1.0/normal.length());
 		Vector tangent = normal.orthogonal();
-		Vector v1 = getVelocity();
-		Vector v2 = other.getVelocity();
+		Vector v1 = getLastVelocity();
+		Vector v2 = other.getLastVelocity();
 		//double m1 = getMass();
 		//double m2 = other.getMass();
 		double v1n = v1.dotP(normal);
@@ -117,14 +113,13 @@ public class Ball extends DynamicActor
 	public Vector getVelocity() {
 		return vel;
 	}
+	public Vector getLastVelocity() {
+		return (lastVel == null) ? vel : lastVel;
+	}
 	public void setVelocity(Vector vel) {
 		this.vel = vel;
 	}
 	public void addVelocity(Vector vel) {
-		if (nextVel == null) {
-			nextVel = vel;
-		} else {
-			nextVel = nextVel.add(vel);
-		}
+		setVelocity(getVelocity().add(vel));
 	}
 }
