@@ -89,7 +89,6 @@ public class Vector
 	}
 
 	public Vector mirror(Vector v2) {
-		// sadly, this method isn't needed anyway, so neither is transform()
 		if (zeroes) return this;
 		double angle = v2.angle();
 		double sin = Math.sin(2*angle);

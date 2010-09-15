@@ -23,4 +23,16 @@ abstract class Shape {
 		if (y()+h()/2 > size.y()) res.add(PhysicsWorld.Walls.SOUTH);
 		return res;
 	}
+	public Vector bbox_tl() {
+		return pos().add(size().scale(-0.5));
+	}
+	public Vector bbox_br() {
+		return pos().add(size().scale(0.5));
+	}
+	public Vector bbox_tr() {
+		return pos().add(size().scale(new Vector(0.5,-0.5)));
+	}
+	public Vector bbox_bl() {
+		return pos().add(size().scale(new Vector(-0.5,0.5)));
+	}
 }
