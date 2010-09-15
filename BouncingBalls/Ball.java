@@ -10,7 +10,7 @@ import java.util.*;
 public class Ball extends DynamicActor
 {
 	final double radius;
-	public boolean acceptMouse;
+	private boolean acceptMouse;
 	/**
 	 * The bounds of the ball's position vector.
 	 */
@@ -27,6 +27,10 @@ public class Ball extends DynamicActor
 		return new Circle(getLocation(), radius);
 	}
 
+	boolean getMouseEnabled() {return acceptMouse;}
+	void enableMouse() {acceptMouse = true;}
+	void disableMouse() {acceptMouse = false;}
+
 	public void act() {
 		if (acceptMouse) {handleMouse();}
 	}
@@ -37,23 +41,23 @@ public class Ball extends DynamicActor
 		Vector mouse = (mouseinfo == null) ? Vector.zero() : new Vector(mouseinfo.getX(), mouseinfo.getY());
 		if (heldOffset == null) {
 			if (Greenfoot.mousePressed(this)) {
+				// mouse pressed
 				heldOffset = mouse.subtract(getLocation());
 				System.out.println("Set held offset to "+heldOffset);
 			}
 			return;
 		}
 		if (Greenfoot.mouseClicked(this) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 0)) {
-			//System.out.println("Mouse up");
+			// mouse released
 			heldOffset = null;
 			return;
 		}
 		if (Greenfoot.mouseDragged(this)) {
-			//System.out.println("Mouse down at "+mouse);
+			// mouse moved while held down
 			Vector moveTo = mouse.subtract(heldOffset);
-			System.out.println("Moving to "+moveTo+" "+mouseinfo);
 			setVelocity(moveTo.subtract(getLocation()));
 		} else {
-			System.out.println("Staying still "+mouseinfo);
+			// mouse not moved while held down
 			setVelocity(Vector.zero());
 		}
 	}
