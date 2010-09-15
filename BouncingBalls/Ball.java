@@ -52,7 +52,7 @@ public class Ball extends DynamicActor
 		}
 		deflectOnBoundingBox(other);
 		if (other instanceof ArkanoidBrick) {
-			getWorld().removeObject(other);
+			((ArkanoidBrick)other).hit();
 		}
 	}
 	public void deflectOnBoundingBox(ShapeActor other) {
