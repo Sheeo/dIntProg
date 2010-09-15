@@ -17,7 +17,7 @@ public class BallWorld extends PhysicsWorld
 	 */
 	public BallWorld()
 	{	
-		super(540, 480);
+		super(640, 480);
 		ballRadius = findRadius();
 		r = new Random();
 		addBalls(10);
