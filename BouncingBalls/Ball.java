@@ -75,7 +75,11 @@ public class Ball extends CircularActor implements DynamicActor
 			if (dist > radius*2) {
 				continue;
 			}
-			double nextdist = b.getLocation().subtract(getLocation().add(vel)).length();
+			double nextdist = b.getLocation().add(b.getVelocity()).subtract(getLocation().add(vel)).length();
+			if (nextdist > dist) {
+				// pretend we don't intersect with the ball
+				continue;
+			}
 			balls.add(b);
 		}
 		return balls;
