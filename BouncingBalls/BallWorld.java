@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class BallWorld extends PhysicsWorld
 {
-	private Random r;
+	protected Random r;
 	protected final double ballRadius;
 
 	/**
@@ -44,5 +44,8 @@ public class BallWorld extends PhysicsWorld
 	}
 	public void addBall(int x, int y, double vX, double vY) {
 		addObject(new Ball(vX, vY), x, y);
+	}
+	public void addBall(Vector position) {
+		addObject(new Ball(0.0, 0.0), (int) Math.round(position.x()), (int) Math.round(position.y()));
 	}
 }
