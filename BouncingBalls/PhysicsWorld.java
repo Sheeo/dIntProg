@@ -1,6 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import java.util.Random;
-import java.util.List;
+import java.util.*;
 
 /**
  * A world of highly realistic physics.
@@ -11,6 +10,9 @@ import java.util.List;
 public class PhysicsWorld extends World
 {
 	protected Vector gravity;
+	public enum Walls {
+		NORTH, EAST, SOUTH, WEST // CSS order
+	};
 
 	public PhysicsWorld() {	
 		this(540, 480);
@@ -31,17 +33,15 @@ public class PhysicsWorld extends World
 		return gravity;
 	}
 	public void act() {
-		List objs = getObjects(ShapeActor.class);
+		List objs = getObjects(DynamicActor.class);
 		for (Object o : objs) {
-			//ShapeActor a = (ShapeActor) o;
-			Ball a = (Ball) o;
-			a.checkCollisions();
-			addGravity(a);
+			DynamicActor a = (DynamicActor) o;
+			a.move();
 		}
 		for (Object o : objs) {
-			//ShapeActor a = (ShapeActor) o;
-			Ball a = (Ball) o;
-			a.move();
+			DynamicActor a = (DynamicActor) o;
+			checkCollisions(a);
+			addGravity(a);
 		}
 	}
 	protected void addGravity(DynamicActor a) {
@@ -49,5 +49,38 @@ public class PhysicsWorld extends World
 	}
 	public Vector getSize() {
 		return new Vector(getWidth(), getHeight());
+	}
+	protected void checkCollisions(DynamicActor a) {
+		checkWallCollisions(a);
+		List<ShapeActor> intersecting = a.getIntersectingActors();
+		if (intersecting.isEmpty()) {
+			return;
+		}
+		for (ShapeActor b : intersecting) {
+			if (b instanceof DynamicActor) {
+				DynamicActor d = (DynamicActor) b;
+				double dist = a.getLocation().subtract(d.getLocation()).length();
+				double nextdist = a.getLocation().add(a.getLastVelocity()).subtract(d.getLocation().add(d.getLastVelocity())).length();
+				if (nextdist > dist) {
+					continue;
+				}
+			}
+			a.handleIntersection(b);
+		}
+	}
+	private void checkWallCollisions(DynamicActor a) {
+		// god I miss operator overloading
+		Shape shape = a.getShape();
+		Vector size = getSize();
+		EnumSet<PhysicsWorld.Walls> intersection = shape.wallIntersection(size);
+		if (intersection.isEmpty()) {
+			return;
+		}
+		for (PhysicsWorld.Walls w : intersection) {
+			a.collidedWithWall(w);
+		}
+		Vector v1 = shape.size().scale(0.5);
+		Vector v2 = getSize().subtract(v1);
+		a.setLocation(a.getLocation().clamp(shape.size().scale(0.5), getSize().subtract(shape.size().scale(0.5))));
 	}
 }

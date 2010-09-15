@@ -1,4 +1,5 @@
 import greenfoot.*;
+import java.util.*;
 abstract class ShapeActor extends Actor {
 	abstract Shape getShape();
 	protected Vector size;
@@ -27,5 +28,16 @@ abstract class ShapeActor extends Actor {
 	}
 	public void moveBy(Vector vector) {
 		setLocation(getLocation().add(vector));
+	}
+	public List<ShapeActor> getIntersectingActors() {
+		List intersecting = getIntersectingObjects(ShapeActor.class);
+		ArrayList<ShapeActor> res = new ArrayList<ShapeActor>();
+		for (Object o : intersecting) {
+			ShapeActor a = (ShapeActor) o;
+			if (intersects(a)) {
+				res.add(a);
+			}
+		}
+		return res;
 	}
 }

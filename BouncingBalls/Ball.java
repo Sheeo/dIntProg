@@ -23,11 +23,7 @@ public class Ball extends DynamicActor
 		this(3,2);
 	}
 	Shape getShape() {
-		return new Circle(getWidth(), getHeight(), radius);
-	}
-	public void checkCollisions() {
-		checkWallCollisions();
-		checkBallCollisions();
+		return new Circle(getLocation(), radius);
 	}
 
 	private ArrayList<Ball> getIntersectingBalls() {
@@ -49,18 +45,17 @@ public class Ball extends DynamicActor
 		return balls;
 	}
 
-	private void checkBallCollisions() {
-		ArrayList<Ball> balls = getIntersectingBalls();
-		if (0 == balls.size()) {
+	public void handleIntersection(ShapeActor other) {
+		if (!(other instanceof Ball)) {
+			super.handleIntersection(other);
 			return;
 		}
-		// it's gay, balls are touching
-		Ball other = balls.get(0); // only bounce off one
-		Vector normal = other.getLocation().subtract(getLocation());
+		Ball b = (Ball) other;
+		Vector normal = b.getLocation().subtract(getLocation());
 		normal = normal.scale(1.0/normal.length());
 		Vector tangent = normal.orthogonal();
 		Vector v1 = getLastVelocity();
-		Vector v2 = other.getLastVelocity();
+		Vector v2 = b.getLastVelocity();
 		//double m1 = getMass();
 		//double m2 = other.getMass();
 		double v1n = v1.dotP(normal);
@@ -73,4 +68,11 @@ public class Ball extends DynamicActor
 		addVelocity(normal.scale(v1np).add(tangent.scale(v1t)).subtract(v1));
 	}
 
+	public void collidedWithWall(PhysicsWorld.Walls wall) {
+		if (wall == PhysicsWorld.Walls.NORTH || wall == PhysicsWorld.Walls.SOUTH) {
+			setVelocity(getVelocity().scale(new Vector(1.0, -1.0)));
+		} else {
+			setVelocity(getVelocity().scale(new Vector(-1.0, 1.0)));
+		}
+	}
 }
