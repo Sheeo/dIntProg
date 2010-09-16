@@ -87,14 +87,6 @@ public class PhysicsWorld extends World
 			return;
 		}
 		for (ShapeActor b : intersecting) {
-			if (b instanceof DynamicActor) {
-				DynamicActor d = (DynamicActor) b;
-				double dist = a.getLocation().subtract(d.getLocation()).length();
-				double nextdist = a.getLocation().add(a.getLastVelocity()).subtract(d.getLocation().add(d.getLastVelocity())).length();
-				if (nextdist > dist) {
-					continue;
-				}
-			}
 			a.handleIntersection(b);
 		}
 	}
@@ -103,7 +95,26 @@ public class PhysicsWorld extends World
 		fixWallCollisions(a);
 	}
 	private void fixActorCollisions(DynamicActor a) {
-		// ...
+		List<ShapeActor> intersecting = a.getIntersectingActors();
+		for (ShapeActor b : intersecting) {
+			Intersection i = a.getShape().intersection(b.getShape());
+			if (!i.intersects) {
+				continue;
+			}
+			if (b instanceof DynamicActor) {
+				double dist = i.amount/2.0;
+				Vector d = b.getLocation().subtract(a.getLocation());
+				d = d.scale(dist/d.length());
+				a.setLocation(a.getLocation().add(d));
+				b.setLocation(b.getLocation().subtract(d));
+			} else {
+				double dist = i.amount;
+				System.out.println(dist);
+				Vector d = b.getLocation().subtract(a.getLocation());
+				d = d.scale(dist/d.length());
+				a.setLocation(a.getLocation().add(d));
+			}
+		}
 	}
 	private void fixWallCollisions(DynamicActor a) {
 		Shape shape = a.getShape();

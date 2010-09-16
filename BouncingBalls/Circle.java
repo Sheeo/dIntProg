@@ -39,7 +39,7 @@ public class Circle extends Shape {
 		if (tl.x() <= x() && x() <= br.x()) {
 			Vector normal = new Vector(0.0, 1.0);
 			double dist;
-			if (tl.y() >= y()+r()) {
+			if (them.y() >= y()) {
 				dist = tl.y()-y()-r();
 			} else {
 				dist = y()-r()-tl.y();
@@ -48,7 +48,7 @@ public class Circle extends Shape {
 		} else if (tl.y() <= y() && y() <= br.y()) {
 			Vector normal = new Vector(1.0, 0.0);
 			double dist;
-			if (tl.x() >= x()+r()) {
+			if (them.x() >= x()) {
 				dist = tl.x()-x()-r();
 			} else {
 				dist = x()-r()-tl.x();
@@ -66,7 +66,7 @@ public class Circle extends Shape {
 			d2 = bl.subtract(pos()).length();
 			if (d2 < dist) {dist = d2; point = bl;}
 			Vector vec = point.subtract(pos());
-			return new Intersection(vec.orthogonal(), vec.length()-r());
+			return new Intersection(vec, vec.length()-r());
 		}
 	}
 }
