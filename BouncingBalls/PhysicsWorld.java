@@ -46,13 +46,16 @@ public class PhysicsWorld extends World
 		List objs = getObjects(DynamicActor.class);
 		for (Object o : objs) {
 			DynamicActor a = (DynamicActor) o;
+			addGravity(a);
+			addFriction(a);
 			a.move();
 		}
 		for (Object o : objs) {
 			DynamicActor a = (DynamicActor) o;
 			checkCollisions(a);
-			addGravity(a);
-			addFriction(a);
+		}
+		for (Object o : objs) {
+			DynamicActor a = (DynamicActor) o;
 			fixCollisions(a);
 		}
 	}
