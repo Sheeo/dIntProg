@@ -1,12 +1,14 @@
 import java.util.*;
-class PoolBreak extends BallWorld {
+public class PoolBreak extends BallWorld {
 	private Ball white;
 	private int acttick;
 
 	enum State {START, ROLL, END};
+	
 	private State state;
 
 	private boolean autoMode;
+	
 	public PoolBreak() {
 		super();
 		setFriction(0.995);

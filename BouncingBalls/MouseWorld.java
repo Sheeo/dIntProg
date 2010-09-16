@@ -1,4 +1,4 @@
-class MouseWorld extends PhysicsWorld {
+public class MouseWorld extends PhysicsWorld {
 	public MouseWorld() {
 		super(640, 480);
 		Ball b = new Ball(0, 0);

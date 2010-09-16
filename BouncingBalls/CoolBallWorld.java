@@ -1,4 +1,4 @@
-class CoolBallWorld extends BallWorld {
+public class CoolBallWorld extends BallWorld {
 	private int ballID;
 	public CoolBallWorld() {
 		super();
