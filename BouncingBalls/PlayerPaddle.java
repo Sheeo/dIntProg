@@ -21,11 +21,12 @@ public class PlayerPaddle extends Paddle {
 		boolean left = (keyleft != null && Greenfoot.isKeyDown(keyleft));
 		boolean right = (keyright != null && Greenfoot.isKeyDown(keyright));
 		if (left && !right) {
-			setVelocity(new Vector(-2.0, 0.0));
+			moveBy(-2.0);
 		} else if (right && !left) {
-			setVelocity(new Vector(2.0, 0.0));
-		} else {
-			setVelocity(Vector.zero());
+			moveBy(2.0);
 		}
+	}
+	private void moveBy(double dX) {
+		setLocation(getLocation().add(new Vector(dX, 0)));
 	}
 }

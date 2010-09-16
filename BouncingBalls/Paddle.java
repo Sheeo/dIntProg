@@ -1,4 +1,4 @@
-public class Paddle extends DynamicActor {
+public class Paddle extends ShapeActor {
 	private Vector size;
 	public Paddle() {
 		this(new Vector(200.0, 30.0));
