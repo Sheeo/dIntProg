@@ -56,7 +56,7 @@ public class AdvancedFilters
 		Image rotatedImage = new Image(image_.getHeight(), image_.getWidth(), "Rotated Image");
 		for(int i = 0; i< image_.getWidth(); i++) {
 			for(int j = 0; j < image_.getHeight(); j++) {
-				// Flip
+				// Rotate
 				rotatedImage.getPixel(j, i).setValue(image_.getPixel(i,j).getValue());
 			}
 		}
@@ -64,6 +64,9 @@ public class AdvancedFilters
 		image_.pixelsUpdated();
 	}
 	
+	/**
+	 * Blurs the image using average-neighbour values
+	 */
 	public void blur()
 	{
 		for(int i = 0; i < image_.getWidth(); i++)
@@ -76,6 +79,9 @@ public class AdvancedFilters
 		image_.pixelsUpdated();
 	}
 	
+	/**
+	 * Returns average value of neighbouring pixels
+	 */
 	private int average(List<Pixel> pixels)
 	{
 		int sum = 0;
