@@ -53,7 +53,6 @@ public class Ball extends DynamicActor
 		{
 			if (Greenfoot.mouseClicked(null) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 1)) {
 				// mouse released
-				System.out.println("OS X Mouse released, mouseinfo: " + mouseinfo);
 				heldOffset = null;
 				return;
 			}
@@ -62,7 +61,6 @@ public class Ball extends DynamicActor
 		{
 			if (Greenfoot.mouseClicked(this) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 0)) {
 				// mouse released
-				System.out.println("Mouse released, mouseinfo: " + mouseinfo);
 				heldOffset = null;
 				return;
 			}
