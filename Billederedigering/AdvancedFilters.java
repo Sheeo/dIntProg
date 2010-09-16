@@ -1,4 +1,5 @@
 import java.util.List;
+import java.lang.Math.*;
 
 /**
  * Advanced imagefilters
@@ -91,4 +92,13 @@ public class AdvancedFilters
 		}
 		return sum / pixels.size();
 	}
+	
+	/**
+	 * Returns the value of:
+	 * (1/(2*pi*sigma^2))*e^(-u^2+v^2)/(2*sigma^2)
+	 */
+	/*private double G(int u, int v, double sigma)
+	{
+		return (1/(2*PI*( Math.pow(sigma,2) )))*Math.pow(E, (Math.pow(u, 2) + Math.pow(v, 2) / 2* Math.pow(sigma,2)));
+	}*/
 }
