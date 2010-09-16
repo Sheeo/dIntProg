@@ -1,11 +1,25 @@
 public class Arkanoid extends PhysicsWorld {
+	private Ball ball;
 	public Arkanoid() {
-		super(800, 500);
-		for (double y = ArkanoidBrick.height; y < 250; y += ArkanoidBrick.height*1.2) {
-			for (double x = ArkanoidBrick.width; x < 800.0-ArkanoidBrick.width/2.0; x += ArkanoidBrick.width*1.2) {
-				addObject(new ArkanoidBrick(), (int) Math.round(x), (int) Math.round(y));
+		super(416, 512);
+		addBricks();
+		addBall();
+	}
+	private void addBricks() {
+		String[] colors = {"lime", "purple", "blue", "yellow", "red", "gray"};
+		int y = 4*ArkanoidBrick.height+ArkanoidBrick.height/2;
+		int bricks = getWidth()/ArkanoidBrick.width;
+		for (int j = colors.length; j-- > 0;) {
+			for (int i = 0; i < bricks; ++i) {
+				ArkanoidBrick brick = new ArkanoidBrick(colors[j]);
+				addObject(brick, i*ArkanoidBrick.width+ArkanoidBrick.width/2, y);
 			}
+			y += ArkanoidBrick.height;
 		}
-		addObject(new Ball(1, -6), 350, 450);
+	}
+	private void addBall() {
+		ball = new Ball(1, -6);
+		ball.setImage("arkanoidball.png");
+		addObject(ball, 200, 470);
 	}
 }

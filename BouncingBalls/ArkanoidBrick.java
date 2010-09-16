@@ -1,11 +1,17 @@
 public class ArkanoidBrick extends ShapeActor {
 	private Vector size;
-	public static final double width = 80.0;
-	public static final double height = 20.0;
+	public static final int width = 32;
+	public static final int height = 16;
 	private int hitCount;
+	private String color;
 	
 	public ArkanoidBrick() {
 		this(new Vector(width, height), 1);
+		color = "red";
+	}
+	public ArkanoidBrick(String color) {
+		this();
+		setColor(color);
 	}
 	public ArkanoidBrick(int maxhits) {
 		this();
@@ -17,6 +23,13 @@ public class ArkanoidBrick extends ShapeActor {
 		this.size = size;
 	}
 	
+	public void setColor(String color) {
+		this.color = color;
+		updateColor();
+	}
+	protected void updateColor() {
+		setImage("arkanoid_"+color+".png");
+	}
 	public void hit() {
 		this.hitCount--;
 		if(hitCount <= 0) {
