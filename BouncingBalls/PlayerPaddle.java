@@ -24,6 +24,8 @@ public class PlayerPaddle extends Paddle {
 			setVelocity(new Vector(-2.0, 0.0));
 		} else if (right && !left) {
 			setVelocity(new Vector(2.0, 0.0));
+		} else {
+			setVelocity(Vector.zero());
 		}
 	}
 }
