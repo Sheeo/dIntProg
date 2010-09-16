@@ -63,12 +63,14 @@ public class Ball extends DynamicActor
 		Circle us = (Circle) getShape();
 		Shape them = other.getShape();
 		Vector normal = us.bboxDeflectionNormal(them);
+		mirrorVelocity(normal);
+	}
+	public void mirrorVelocity(Vector normal) {
 		setVelocity(getVelocity().mirror(normal));
 	}
 	public void handleIntersection(Ball other) {
 		Ball b = (Ball) other;
 		Vector normal = other.getShape().intersectionNormal(getShape()).unit();
-		b.getLocation().subtract(getLocation());
 		normal = normal.scale(1.0/normal.length());
 		Vector tangent = normal.orthogonal();
 		Vector v1 = getLastVelocity();
@@ -86,23 +88,10 @@ public class Ball extends DynamicActor
 	}
 
 	public void handleIntersection(Shape s) {
-		if (s instanceof Circle) {
-			handleIntersection((Circle) s);
-		} else if (s instanceof Rectangle) {
-			handleIntersection((Rectangle) s);
-		} else if (s instanceof RoundedRectangle) {
-			handleIntersection((RoundedRectangle) s);
+		Vector normal = s.intersectionNormal(getShape());
+		if (null != normal) {
+			mirrorVelocity(normal.orthogonal());
 		}
-	}
-
-	public void handleIntersection(RoundedRectangle s) {
-		handleIntersection(s.getPrimitive(this.getShape()));
-	}
-
-	public void handleIntersection(Circle s) {
-	}
-
-	public void handleIntersection(Rectangle s) {
 	}
 
 	public void collidedWithWall(PhysicsWorld.Walls wall) {

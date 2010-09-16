@@ -35,7 +35,13 @@ public class RoundedRectangle extends Shape {
 		}
 		return true;
 	}
-	boolean intersects(Circle s) {
+	public boolean intersects(Circle s) {
 		return s.intersects(getPrimitive(s));
+	}
+	public Vector intersectionNormal(Shape s) {
+		if (s instanceof RoundedRectangle) {
+			return null;
+		}
+		return getPrimitive(s).intersectionNormal(this);
 	}
 }
