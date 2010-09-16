@@ -1,5 +1,6 @@
 import java.util.*;
 class PoolBreak extends BallWorld {
+	private Ball white;
 	public PoolBreak() {
 		super();
 		setFriction(0.995);
@@ -9,24 +10,40 @@ class PoolBreak extends BallWorld {
 		removeObjects(getObjects(Ball.class));
 		addFirstBall();
 		addMoreBalls();
+		state = State.START;
+		acttick = 0;
 	}
 	private int acttick;
+	enum State {START, ROLL, END};
+	private State state;
 	public void act() {
 		super.act();
-		if (acttick < 0) {
-			if (0 == ++acttick) {
-				reset();
-			}
-		} else {
-			acttick = (acttick+1)%100;
-			if (acttick == 0) {
-				double sum = velocitySum();
-				System.out.println("Sum of velocities: "+sum);
-				if (sum < 0.1) {
-					acttick = -300;
-					System.out.println("Reset in "+(-acttick)+" ticks");
+		switch (state) {
+			case START:
+				++acttick;
+				if (acttick == 80) {
+					white.setVelocity(new Vector(r.nextGaussian()*4.0+12.0, r.nextDouble()*0.2-0.1));
+					state = State.ROLL;
+					acttick = 0;
 				}
-			}
+				break;
+			case ROLL:
+				++acttick;
+				if (acttick % 100 == 0) {
+					double sum = velocitySum();
+					System.out.println("Sum of velocities: "+sum);
+					if (sum < 0.8) {
+						state = State.END;
+						acttick = 0;
+					}
+				}
+				break;
+			case END:
+				++acttick;
+				if (acttick == 300) {
+					reset();
+				}
+				break;
 		}
 	}
 	private double velocitySum() {
@@ -38,7 +55,7 @@ class PoolBreak extends BallWorld {
 	}
 	public void addFirstBall() {
 		Vector pos = getSize().scale(new Vector(1.0/16.0, 0.5));
-		addBall((int) Math.round(pos.x()), (int) Math.round(pos.y()), r.nextGaussian()*4.0+12.0, r.nextDouble()*0.2-0.1);
+		white = addBall((int) Math.round(pos.x()), (int) Math.round(pos.y()), 0.0, 0.0);
 	}
 	public void addMoreBalls() {
 		Vector base = getSize().scale(new Vector(0.6, 0.5));
