@@ -38,8 +38,11 @@ public abstract class Shape {
 	public Shape getPrimitive(Shape other) {
 		return this;
 	}
-	public Vector intersectionNormal(Shape other) {
+	public Intersection intersection(Shape other) {
 		System.out.println(this+" can't collide with "+other);
-		return null;
+		return Intersection.NoIntersection();
+	}
+	public Vector intersectionNormal(Shape other) {
+		return intersection(other).normal;
 	}
 }

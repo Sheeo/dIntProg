@@ -59,7 +59,7 @@ public class Ball extends DynamicActor
 	public void deflectOnBoundingBox(ShapeActor other) {
 		Circle us = (Circle) getShape();
 		Shape them = other.getShape();
-		Vector normal = us.bboxDeflectionNormal(them);
+		Vector normal = us.bboxIntersection(them).normal;
 		mirrorVelocity(normal);
 	}
 	public void mirrorVelocity(Vector normal) {

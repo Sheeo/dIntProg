@@ -53,6 +53,7 @@ public class PhysicsWorld extends World
 			checkCollisions(a);
 			addGravity(a);
 			addFriction(a);
+			fixCollisions(a);
 		}
 	}
 	protected void addGravity(DynamicActor a) {
@@ -108,6 +109,7 @@ public class PhysicsWorld extends World
 		Shape shape = a.getShape();
 		Vector v1 = shape.size().scale(0.5);
 		Vector v2 = getSize().subtract(v1);
-		a.setLocation(a.getLocation().clamp(shape.size().scale(0.5), getSize().subtract(shape.size().scale(0.5))));
+		System.out.println("Clamping to "+v1+"-"+v2);
+		a.setLocation(a.getLocation().clamp(v1, v2));
 	}
 }

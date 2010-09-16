@@ -25,19 +25,35 @@ public class Circle extends Shape {
 	public boolean intersects(RoundedRectangle s) {
 		return s.intersects(this);
 	}
-	public Vector intersectionNormal(Shape other) {
+	public Intersection intersection(Shape other) {
 		if (other instanceof Circle) {
-			return other.pos().subtract(pos());
+			Vector normal = other.pos().subtract(pos());
+			double amount = normal.length()-r()-((Circle) other).r();
+			return new Intersection(normal, amount);
 		}
-		return bboxDeflectionNormal(other);
+		return bboxIntersection(other);
 	}
-	public Vector bboxDeflectionNormal(Shape them) {
+	public Intersection bboxIntersection(Shape them) {
 		Vector tl = them.bbox_tl();
 		Vector br = them.bbox_br();
 		if (tl.x() <= x() && x() <= br.x()) {
-			return new Vector(0.0, 1.0);
+			Vector normal = new Vector(0.0, 1.0);
+			double dist;
+			if (tl.y() >= y()+r()) {
+				dist = tl.y()-y()-r();
+			} else {
+				dist = y()-r()-tl.y();
+			}
+			return new Intersection(normal, dist);
 		} else if (tl.y() <= y() && y() <= br.y()) {
-			return new Vector(1.0, 0.0);
+			Vector normal = new Vector(1.0, 0.0);
+			double dist;
+			if (tl.x() >= x()+r()) {
+				dist = tl.x()-x()-r();
+			} else {
+				dist = x()-r()-tl.x();
+			}
+			return new Intersection(normal, dist);
 		} else {
 			Vector tr = them.bbox_tr();
 			Vector bl = them.bbox_bl();
@@ -49,7 +65,8 @@ public class Circle extends Shape {
 			if (d2 < dist) {dist = d2; point = br;}
 			d2 = bl.subtract(pos()).length();
 			if (d2 < dist) {dist = d2; point = bl;}
-			return point.subtract(pos()).orthogonal();
+			Vector vec = point.subtract(pos());
+			return new Intersection(vec.orthogonal(), vec.length()-r());
 		}
 	}
 }
