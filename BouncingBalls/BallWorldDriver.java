@@ -3,5 +3,6 @@ public class BallWorldDriver extends BallWorld {
 		super();
 		addBalls(10);
 		setGravity(new Vector(0.0, 0.3));
+		setFriction(0.998);
 	}
 }
