@@ -42,7 +42,7 @@ public class Circle extends Shape {
 			if (them.y() >= y()) {
 				dist = tl.y()-y()-r();
 			} else {
-				dist = y()-r()-tl.y();
+				dist = y()-r()-br.y();
 			}
 			return new Intersection(normal, dist);
 		} else if (tl.y() <= y() && y() <= br.y()) {
@@ -51,7 +51,7 @@ public class Circle extends Shape {
 			if (them.x() >= x()) {
 				dist = tl.x()-x()-r();
 			} else {
-				dist = x()-r()-tl.x();
+				dist = x()-r()-br.x();
 			}
 			return new Intersection(normal, dist);
 		} else {
