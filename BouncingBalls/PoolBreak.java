@@ -49,7 +49,6 @@ public class PoolBreak extends BallWorld {
 				++acttick;
 				if (acttick % 100 == 0) {
 					double sum = velocitySum();
-					System.out.println("Sum of velocities: "+sum);
 					if (sum < 0.8) {
 						state = State.END;
 						acttick = 0;
