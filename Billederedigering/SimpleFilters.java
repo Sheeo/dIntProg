@@ -28,6 +28,7 @@ public class SimpleFilters
 		{
 			i.setValue(i.getValue()+amount);
 		}
+		image_.pixelsUpdated();
     }
 
 	/**
@@ -41,5 +42,35 @@ public class SimpleFilters
 		{
 			i.setValue(i.getValue()-amount);
 		}
+		image_.pixelsUpdated();
+    }
+
+	/**
+     * Invert the image
+	 *
+     */
+	public void invert()
+    {
+        for(Pixel i : image_.getPixels())
+		{
+			i.setValue(255-i.getValue());
+		}
+		image_.pixelsUpdated();
+    }
+
+	/**
+     * Solarize the image
+	 *
+     */
+	public void solarize()
+    {
+        for(Pixel i : image_.getPixels())
+		{
+			if(i.getValue()<128)
+			{
+				i.setValue(255-i.getValue());
+			}
+		}
+		image_.pixelsUpdated();
     }
 }
