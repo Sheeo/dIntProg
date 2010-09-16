@@ -1,4 +1,4 @@
-class Circle extends Shape {
+public class Circle extends Shape {
 	double r_; double r() {return r_;}
 	public Circle(Vector loc, double r) {
 		this(loc.x(), loc.y(), r);

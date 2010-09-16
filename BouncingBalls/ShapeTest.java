@@ -1,4 +1,4 @@
-class ShapeTest {
+public class ShapeTest {
 	static boolean circleCollide(double x1, double y1, double r1, double x2, double y2, double r2) {
 		Circle a = new Circle(x1, y1, r1);
 		Circle b = new Circle(x2, y2, r2);

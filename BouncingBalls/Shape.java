@@ -1,5 +1,5 @@
 import java.util.*;
-abstract class Shape {
+public abstract class Shape {
 	private double x_; double x() {return x_;}
 	private double y_; double y() {return y_;}
 	private double w_; double w() {return w_;}
