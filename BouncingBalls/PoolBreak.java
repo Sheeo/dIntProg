@@ -1,10 +1,28 @@
 import java.util.*;
 class PoolBreak extends BallWorld {
 	private Ball white;
+	private int acttick;
+
+	enum State {START, ROLL, END};
+	private State state;
+
+	private boolean autoMode;
 	public PoolBreak() {
 		super();
 		setFriction(0.995);
 		reset();
+	}
+	public void autoOn() {
+		autoMode = true;
+		if (null != white) {
+			white.disableMouse();
+		}
+	}
+	public void autoOff() {
+		autoMode = false;
+		if (null != white) {
+			white.enableMouse();
+		}
 	}
 	public void reset() {
 		removeObjects(getObjects(Ball.class));
@@ -13,11 +31,9 @@ class PoolBreak extends BallWorld {
 		state = State.START;
 		acttick = 0;
 	}
-	private int acttick;
-	enum State {START, ROLL, END};
-	private State state;
 	public void act() {
 		super.act();
+		if (!autoMode) {return;}
 		switch (state) {
 			case START:
 				++acttick;
@@ -56,6 +72,7 @@ class PoolBreak extends BallWorld {
 	public void addFirstBall() {
 		Vector pos = getSize().scale(new Vector(1.0/16.0, 0.5));
 		white = addBall((int) Math.round(pos.x()), (int) Math.round(pos.y()), 0.0, 0.0);
+		if (!autoMode) {white.enableMouse();}
 	}
 	public void addMoreBalls() {
 		Vector base = getSize().scale(new Vector(0.6, 0.5));
