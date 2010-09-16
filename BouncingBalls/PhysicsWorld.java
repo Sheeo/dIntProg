@@ -67,6 +67,20 @@ public class PhysicsWorld extends World
 	}
 	protected void checkCollisions(DynamicActor a) {
 		checkWallCollisions(a);
+		checkActorCollisions(a);
+	}
+	private void checkWallCollisions(DynamicActor a) {
+		Vector size = getSize();
+		Shape shape = a.getShape();
+		EnumSet<PhysicsWorld.Walls> intersection = shape.wallIntersection(size);
+		if (intersection.isEmpty()) {
+			return;
+		}
+		for (PhysicsWorld.Walls w : intersection) {
+			a.collidedWithWall(w);
+		}
+	}
+	private void checkActorCollisions(DynamicActor a) {
 		List<ShapeActor> intersecting = a.getIntersectingActors();
 		if (intersecting.isEmpty()) {
 			return;
@@ -83,17 +97,15 @@ public class PhysicsWorld extends World
 			a.handleIntersection(b);
 		}
 	}
-	private void checkWallCollisions(DynamicActor a) {
-		// god I miss operator overloading
+	private void fixCollisions(DynamicActor a) {
+		fixActorCollisions(a);
+		fixWallCollisions(a);
+	}
+	private void fixActorCollisions(DynamicActor a) {
+		// ...
+	}
+	private void fixWallCollisions(DynamicActor a) {
 		Shape shape = a.getShape();
-		Vector size = getSize();
-		EnumSet<PhysicsWorld.Walls> intersection = shape.wallIntersection(size);
-		if (intersection.isEmpty()) {
-			return;
-		}
-		for (PhysicsWorld.Walls w : intersection) {
-			a.collidedWithWall(w);
-		}
 		Vector v1 = shape.size().scale(0.5);
 		Vector v2 = getSize().subtract(v1);
 		a.setLocation(a.getLocation().clamp(shape.size().scale(0.5), getSize().subtract(shape.size().scale(0.5))));
