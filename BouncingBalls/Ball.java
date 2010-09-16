@@ -50,42 +50,25 @@ public class Ball extends DynamicActor
 			handleIntersection((Ball) other);
 			return;
 		}
+		Shape s = other.getShape();
+		if (s instanceof RoundedRectangle) {
+			handleIntersection((RoundedRectangle) s);
+		}
 		deflectOnBoundingBox(other);
 		if (other instanceof ArkanoidBrick) {
 			((ArkanoidBrick)other).hit();
 		}
 	}
 	public void deflectOnBoundingBox(ShapeActor other) {
-		Shape us = getShape();
+		Circle us = (Circle) getShape();
 		Shape them = other.getShape();
-		Vector tl = them.bbox_tl();
-		Vector br = them.bbox_br();
-		Vector normal;
-		//System.out.println(tl+" "+us.pos()+" "+br);
-		if (tl.x() <= us.x() && us.x() <= br.x()) {
-			normal = new Vector(1.0, 0.0);
-		} else if (tl.y() <= us.y() && us.y() <= br.y()) {
-			normal = new Vector(0.0, 1.0);
-		} else {
-			Vector tr = them.bbox_tr();
-			Vector bl = them.bbox_bl();
-			Vector point = tl;
-			double dist = tl.subtract(us.pos()).length();
-			double d2 = tr.subtract(us.pos()).length();
-			if (d2 < dist) {dist = d2; point = tr;}
-			d2 = br.subtract(us.pos()).length();
-			if (d2 < dist) {dist = d2; point = br;}
-			d2 = bl.subtract(us.pos()).length();
-			if (d2 < dist) {dist = d2; point = bl;}
-			normal = point.subtract(us.pos()).orthogonal();
-			//System.out.println("We hit corner "+point+" (dist "+dist+")");
-		}
-		//System.out.println("Deflecting on "+normal);
+		Vector normal = us.bboxDeflectionNormal(them);
 		setVelocity(getVelocity().mirror(normal));
 	}
 	public void handleIntersection(Ball other) {
 		Ball b = (Ball) other;
-		Vector normal = b.getLocation().subtract(getLocation());
+		Vector normal = other.getShape().intersectionNormal(getShape()).unit();
+		b.getLocation().subtract(getLocation());
 		normal = normal.scale(1.0/normal.length());
 		Vector tangent = normal.orthogonal();
 		Vector v1 = getLastVelocity();
@@ -100,6 +83,26 @@ public class Ball extends DynamicActor
 		//double v1np = v1n*(m1-m2)/(m1+m2)+2.0*m2*v2n/(m1+m2);
 		double v1np = v2n; // for m1 = m2
 		addVelocity(normal.scale(v1np).add(tangent.scale(v1t)).subtract(v1));
+	}
+
+	public void handleIntersection(Shape s) {
+		if (s instanceof Circle) {
+			handleIntersection((Circle) s);
+		} else if (s instanceof Rectangle) {
+			handleIntersection((Rectangle) s);
+		} else if (s instanceof RoundedRectangle) {
+			handleIntersection((RoundedRectangle) s);
+		}
+	}
+
+	public void handleIntersection(RoundedRectangle s) {
+		handleIntersection(s.getPrimitive(this.getShape()));
+	}
+
+	public void handleIntersection(Circle s) {
+	}
+
+	public void handleIntersection(Rectangle s) {
 	}
 
 	public void collidedWithWall(PhysicsWorld.Walls wall) {

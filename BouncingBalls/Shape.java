@@ -35,4 +35,10 @@ public abstract class Shape {
 	public Vector bbox_bl() {
 		return pos().add(size().scale(new Vector(-0.5,0.5)));
 	}
+	public Shape getPrimitive(Shape other) {
+		return this;
+	}
+	public Vector intersectionNormal(Shape other) {
+		return null;
+	}
 }
