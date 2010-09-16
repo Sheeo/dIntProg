@@ -1,4 +1,4 @@
-class Arkanoid extends PhysicsWorld {
+public class Arkanoid extends PhysicsWorld {
 	public Arkanoid() {
 		super(800, 500);
 		for (double y = ArkanoidBrick.height; y < 250; y += ArkanoidBrick.height*1.2) {

@@ -1,4 +1,4 @@
-class ArkanoidBrick extends ShapeActor {
+public class ArkanoidBrick extends ShapeActor {
 	private Vector size;
 	public static final double width = 80.0;
 	public static final double height = 20.0;

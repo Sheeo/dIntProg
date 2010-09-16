@@ -1,5 +1,5 @@
 import java.util.*;
-abstract class Shape {
+public abstract class Shape {
 	private double x_; double x() {return x_;}
 	private double y_; double y() {return y_;}
 	private double w_; double w() {return w_;}
@@ -34,5 +34,11 @@ abstract class Shape {
 	}
 	public Vector bbox_bl() {
 		return pos().add(size().scale(new Vector(-0.5,0.5)));
+	}
+	public Shape getPrimitive(Shape other) {
+		return this;
+	}
+	public Vector intersectionNormal(Shape other) {
+		return null;
 	}
 }

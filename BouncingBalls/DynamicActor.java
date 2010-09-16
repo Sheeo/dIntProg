@@ -1,5 +1,5 @@
 import greenfoot.*;
-abstract class DynamicActor extends ShapeActor {
+public abstract class DynamicActor extends ShapeActor {
 	private Vector vel;
 	private Vector lastVel;
 	private boolean acceptMouse;

@@ -111,4 +111,8 @@ public class Vector
 	public double dotP(Vector v) {
 		return x()*v.x()+y()*v.y();
 	}
+
+	public Vector unit() {
+		return scale(1.0/length());
+	}
 }

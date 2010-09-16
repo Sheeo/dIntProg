@@ -1,6 +1,6 @@
 import greenfoot.*;
 import java.util.*;
-abstract class ShapeActor extends Actor {
+public abstract class ShapeActor extends Actor {
 	abstract Shape getShape();
 	protected Vector size;
 	private Vector location;
