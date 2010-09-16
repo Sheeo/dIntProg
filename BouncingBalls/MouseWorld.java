@@ -3,6 +3,6 @@ class MouseWorld extends PhysicsWorld {
 		super(640, 480);
 		Ball b = new Ball(0, 0);
 		addObject(b, 320, 240);
-		b.acceptMouse = true;
+		b.enableMouse();
 	}
 }
