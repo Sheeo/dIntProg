@@ -43,30 +43,34 @@ public class Ball extends DynamicActor
 		lastKnownMouse = mouse;
 		if (heldOffset == null) {
 			if (Greenfoot.mousePressed(this)) {
-				// mouse pressed
-				heldOffset = mouse.subtract(getLocation());
-				System.out.println("Set held offset to "+heldOffset);
+				onMousePressed(mouse);
 			}
 			return;
 		}
 		if(System.getProperty("os.name").equals("Mac OS X"))
 		{
 			if (Greenfoot.mouseClicked(null) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 1)) {
-				// mouse released
-				System.out.println("OS X Mouse released, mouseinfo: " + mouseinfo);
-				heldOffset = null;
+				onMouseReleased();
 				return;
 			}
 		}
 		else
 		{
 			if (Greenfoot.mouseClicked(this) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 0)) {
-				// mouse released
-				System.out.println("Mouse released, mouseinfo: " + mouseinfo);
-				heldOffset = null;
+				onMouseReleased();
 				return;
 			}
 		}
+		onMouseMoved(mouse);
+	}
+	private void onMousePressed(Vector mouse) {
+		heldOffset = mouse.subtract(getLocation());
+		System.out.println("Set held offset to "+heldOffset);
+	}
+	private void onMouseReleased() {
+		heldOffset = null;
+	}
+	private void onMouseMoved(Vector mouse) {
 		Vector moveTo = mouse.subtract(heldOffset);
 		Vector newVel = moveTo.subtract(getLocation());
 		double len = newVel.length();
