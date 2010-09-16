@@ -28,7 +28,7 @@ public class Ball extends DynamicActor
 	}
 
 	boolean getMouseEnabled() {return acceptMouse;}
-	void enableMouse() {acceptMouse = true;}
+	public void enableMouse() {acceptMouse = true;}
 	void disableMouse() {acceptMouse = false;}
 
 	public void act() {
@@ -36,9 +36,11 @@ public class Ball extends DynamicActor
 	}
 
 	private Vector heldOffset;
+	private Vector lastKnownMouse;
 	private void handleMouse() {
 		MouseInfo mouseinfo = Greenfoot.getMouseInfo();
-		Vector mouse = (mouseinfo == null) ? Vector.zero() : new Vector(mouseinfo.getX(), mouseinfo.getY());
+		Vector mouse = (mouseinfo == null) ? ((lastKnownMouse == null) ? Vector.zero() : lastKnownMouse) : new Vector(mouseinfo.getX(), mouseinfo.getY());
+		lastKnownMouse = mouse;
 		if (heldOffset == null) {
 			if (Greenfoot.mousePressed(this)) {
 				// mouse pressed
@@ -47,24 +49,31 @@ public class Ball extends DynamicActor
 			}
 			return;
 		}
-		if (Greenfoot.mouseClicked(this) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 0)) {
-			// mouse released
-			heldOffset = null;
-			return;
-		}
-		if (Greenfoot.mouseDragged(this)) {
-			// mouse moved while held down
-			Vector moveTo = mouse.subtract(heldOffset);
-			Vector newVel = moveTo.subtract(getLocation());
-			double len = newVel.length();
-			if (len > 2*radius) {
-				newVel = newVel.scale(2.0*radius/len);
+		if(System.getProperty("os.name").equals("Mac OS X"))
+		{
+			if (Greenfoot.mouseClicked(null) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 1)) {
+				// mouse released
+				System.out.println("OS X Mouse released, mouseinfo: " + mouseinfo);
+				heldOffset = null;
+				return;
 			}
-			setVelocity(newVel);
-		} else {
-			// mouse not moved while held down
-			setVelocity(Vector.zero());
 		}
+		else
+		{
+			if (Greenfoot.mouseClicked(this) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 0)) {
+				// mouse released
+				System.out.println("Mouse released, mouseinfo: " + mouseinfo);
+				heldOffset = null;
+				return;
+			}
+		}
+		Vector moveTo = mouse.subtract(heldOffset);
+		Vector newVel = moveTo.subtract(getLocation());
+		double len = newVel.length();
+		if (len > 2*radius) {
+			newVel = newVel.scale(2.0*radius/len);
+		}
+		setVelocity(newVel);
 	}
 
 	private ArrayList<Ball> getIntersectingBalls() {
