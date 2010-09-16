@@ -39,6 +39,7 @@ public abstract class Shape {
 		return this;
 	}
 	public Vector intersectionNormal(Shape other) {
+		System.out.println(this+" can't collide with "+other);
 		return null;
 	}
 }

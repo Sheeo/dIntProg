@@ -35,9 +35,9 @@ public class Circle extends Shape {
 		Vector tl = them.bbox_tl();
 		Vector br = them.bbox_br();
 		if (tl.x() <= x() && x() <= br.x()) {
-			return new Vector(1.0, 0.0);
-		} else if (tl.y() <= y() && y() <= br.y()) {
 			return new Vector(0.0, 1.0);
+		} else if (tl.y() <= y() && y() <= br.y()) {
+			return new Vector(1.0, 0.0);
 		} else {
 			Vector tr = them.bbox_tr();
 			Vector bl = them.bbox_bl();

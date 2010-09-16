@@ -51,10 +51,7 @@ public class Ball extends DynamicActor
 			return;
 		}
 		Shape s = other.getShape();
-		if (s instanceof RoundedRectangle) {
-			handleIntersection((RoundedRectangle) s);
-		}
-		deflectOnBoundingBox(other);
+		handleIntersection(s);
 		if (other instanceof ArkanoidBrick) {
 			((ArkanoidBrick)other).hit();
 		}

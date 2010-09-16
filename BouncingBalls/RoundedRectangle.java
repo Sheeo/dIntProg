@@ -13,17 +13,13 @@ public class RoundedRectangle extends Shape {
 	}
 	public Shape getPrimitive(Circle s) {
 		double x1 = x()-w()/2.0+r();
-		System.out.println("Does "+this+" intersect "+s+"?");
 		if (s.x() < x1) {
-			System.out.println("Try left circle");
 			return new Circle(x1, y(), r());
 		}
 		double x2 = x()+w()/2.0-r();
 		if (s.x() > x2) {
-			System.out.println("Try right circle");
 			return new Circle(x2, y(), r());
 		}
-		System.out.println("Try rectangle");
 		return new Rectangle(pos(), size());
 	}
 	public boolean intersects(Shape s) {
@@ -40,8 +36,9 @@ public class RoundedRectangle extends Shape {
 	}
 	public Vector intersectionNormal(Shape s) {
 		if (s instanceof RoundedRectangle) {
+			System.out.println("A RoundedRectangle can't have an intersectionNormal with a RoundedRectangle!");
 			return null;
 		}
-		return getPrimitive(s).intersectionNormal(this);
+		return getPrimitive(s).intersectionNormal(s);
 	}
 }
