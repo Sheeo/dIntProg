@@ -55,7 +55,12 @@ public class Ball extends DynamicActor
 		if (Greenfoot.mouseDragged(this)) {
 			// mouse moved while held down
 			Vector moveTo = mouse.subtract(heldOffset);
-			setVelocity(moveTo.subtract(getLocation()));
+			Vector newVel = moveTo.subtract(getLocation());
+			double len = newVel.length();
+			if (len > 2*radius) {
+				newVel = newVel.scale(2.0*radius/len);
+			}
+			setVelocity(newVel);
 		} else {
 			// mouse not moved while held down
 			setVelocity(Vector.zero());
