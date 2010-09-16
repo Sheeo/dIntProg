@@ -10,7 +10,6 @@ import java.util.*;
 public class Ball extends DynamicActor
 {
 	final double radius;
-	private boolean acceptMouse;
 	/**
 	 * The bounds of the ball's position vector.
 	 */
@@ -25,59 +24,6 @@ public class Ball extends DynamicActor
 	}
 	Shape getShape() {
 		return new Circle(getLocation(), radius);
-	}
-
-	boolean getMouseEnabled() {return acceptMouse;}
-	public void enableMouse() {acceptMouse = true;}
-	void disableMouse() {acceptMouse = false;}
-
-	public void act() {
-		if (acceptMouse) {handleMouse();}
-	}
-
-	private Vector heldOffset;
-	private Vector lastKnownMouse;
-	private void handleMouse() {
-		MouseInfo mouseinfo = Greenfoot.getMouseInfo();
-		Vector mouse = (mouseinfo == null) ? ((lastKnownMouse == null) ? Vector.zero() : lastKnownMouse) : new Vector(mouseinfo.getX(), mouseinfo.getY());
-		lastKnownMouse = mouse;
-		if (heldOffset == null) {
-			if (Greenfoot.mousePressed(this)) {
-				onMousePressed(mouse);
-			}
-			return;
-		}
-		if(System.getProperty("os.name").equals("Mac OS X"))
-		{
-			if (Greenfoot.mouseClicked(null) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 1)) {
-				onMouseReleased();
-				return;
-			}
-		}
-		else
-		{
-			if (Greenfoot.mouseClicked(this) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 0)) {
-				onMouseReleased();
-				return;
-			}
-		}
-		onMouseMoved(mouse);
-	}
-	private void onMousePressed(Vector mouse) {
-		heldOffset = mouse.subtract(getLocation());
-		System.out.println("Set held offset to "+heldOffset);
-	}
-	private void onMouseReleased() {
-		heldOffset = null;
-	}
-	private void onMouseMoved(Vector mouse) {
-		Vector moveTo = mouse.subtract(heldOffset);
-		Vector newVel = moveTo.subtract(getLocation());
-		double len = newVel.length();
-		if (len > 2*radius) {
-			newVel = newVel.scale(2.0*radius/len);
-		}
-		setVelocity(newVel);
 	}
 
 	private ArrayList<Ball> getIntersectingBalls() {
