@@ -8,14 +8,14 @@ import java.util.List;
  */
 public class AdvancedFilters
 {
-	
+
 	private Image image_;
-	
-    public AdvancedFilters(Image image)
+
+	public AdvancedFilters(Image image)
 	{
 		image_ = image;
 	}
-	
+
 	/**
 	 * Mirror the image
 	 */
@@ -31,7 +31,7 @@ public class AdvancedFilters
 		image_=mirroredImage;
 		image_.pixelsUpdated();
 	}
-	
+
 	/**
 	 * Flip the image
 	 */
@@ -47,7 +47,7 @@ public class AdvancedFilters
 		image_=flippedImage;
 		image_.pixelsUpdated();
 	}
-	
+
 	/**
 	 * Rotates the image 90 degrees CCW
 	 */
@@ -63,7 +63,7 @@ public class AdvancedFilters
 		image_=rotatedImage;
 		image_.pixelsUpdated();
 	}
-	
+
 	/**
 	 * Blurs the image using average-neighbour values
 	 */
@@ -78,7 +78,7 @@ public class AdvancedFilters
 		}
 		image_.pixelsUpdated();
 	}
-	
+
 	/**
 	 * Returns average value of neighbouring pixels
 	 */
