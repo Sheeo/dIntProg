@@ -38,11 +38,7 @@ public class SimpleFilters
 	 */
 	public void darken(int amount)
 	{
-		for(Pixel i : image_.getPixels())
-		{
-			i.setValue(i.getValue()-amount);
-		}
-		image_.pixelsUpdated();
+		brighten(-amount);
 	}
 
 	/**
