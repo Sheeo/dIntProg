@@ -109,7 +109,15 @@ public class AdvancedFilters
 	 */
 	private int gaussianWeighedAverage(int i, int j)
 	{
-		
+		int sum = 0;
+		int travelDistance = 3;
+		for(int dI = 0; dI < travelDistance; dI++)
+		{
+			for(int dJ = 0; dJ < travelDistance; dJ++)
+			{
+				if(image_.getPixel())
+			}
+		}
 	}
 	
 	/**
