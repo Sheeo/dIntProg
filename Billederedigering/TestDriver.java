@@ -1,9 +1,9 @@
-
+import java.lang.Math.*;
 /**
- * Write a description of class TestDriver here.
+ * Simplified testing class
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Michael Søndergaard and Mathias Rav
+ * @version 20/9-2010
  */
 public class TestDriver
 {
@@ -27,5 +27,25 @@ public class TestDriver
 		AdvancedFilters filter = new AdvancedFilters(i);
 		filter.blur();
 	}
+	
+	public static void testGaussianBlur()
+	{
+		Image i = new Image("strand.jpg");
+		AdvancedFilters filter = new AdvancedFilters(i);
+		filter.gaussianBlur();
+	}
+	
+	/* Was used to test the G-function on AdvancedFilters
+	public static void testG()
+	{
+		Image i = new Image("strand.jpg");
+		AdvancedFilters filter = new AdvancedFilters(i);
+		System.out.println("Assert that G(1,1, 0.84089642) returns approx. 0.05472157");
+		System.out.println(filter.G(1,1, 0.84089642));
+		
+		System.out.println("Assert that G(0,0, 0.84089642) returns approx. 0.22508352");
+		System.out.println(filter.G(0,0, 0.84089642));
+	}
+	*/
 	
 }

@@ -79,7 +79,12 @@ public class AdvancedFilters
 		}
 		image_.pixelsUpdated();
 	}
-
+	
+	public void gaussianBlur()
+	{
+		
+	}
+	
 	/**
 	 * Returns average value of neighbouring pixels
 	 */
@@ -97,8 +102,9 @@ public class AdvancedFilters
 	 * Returns the value of:
 	 * (1/(2*pi*sigma^2))*e^(-u^2+v^2)/(2*sigma^2)
 	 */
-	/*private double G(int u, int v, double sigma)
+	private double G(int u, int v, double sigma)
 	{
-		return (1/(2*PI*( Math.pow(sigma,2) )))*Math.pow(E, (Math.pow(u, 2) + Math.pow(v, 2) / 2* Math.pow(sigma,2)));
-	}*/
+		// Using very explicit parantheses here
+		return (1/(2* Math.PI * ( Math.pow(sigma,2) ) ) ) * Math.pow(Math.E, -(Math.pow(u, 2) + Math.pow(v, 2)) / (2 * Math.pow(sigma,2)) );
+	}
 }
