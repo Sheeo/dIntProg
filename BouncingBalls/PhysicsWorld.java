@@ -60,41 +60,6 @@ public class PhysicsWorld extends World
 		mouseAttraction = null;
 	}
 
-	public void setGravity(Vector v) {
-		gravity = v;
-	}
-
-	/**
-	 * Set gravity to a vertical vector. (For easier manipulation in Greenfoot.)
-	 */
-	public void setDownwardsGravity(double g) {
-		gravity = new Vector(0, g);
-	}
-
-	public Vector getGravity() {
-		return gravity;
-	}
-
-	/**
-	 * Friction getter and setters.
-	 */
-	public void setFriction(double fric) {
-		friction = fric;
-	}
-	public Double getFriction() {
-		return friction;
-	}
-	public void clearFriction() {
-		friction = null;
-	}
-
-	/**
-	 * Set mouse attraction to an amount or null.
-	 */
-	public void setMouseAttraction(Double attraction) {
-		mouseAttraction = attraction;
-	}
-
 	/**
 	 * The act() method. Iterate through all DynamicActors a couple of times,
 	 * each time doing some stuff to each.
@@ -126,6 +91,10 @@ public class PhysicsWorld extends World
 		}
 	}
 
+	/*******************************************************************
+	 * Methods that apply acceleration to DynamicActors
+	 *******************************************************************/
+
 	/**
 	 * Apply gravity to a DynamicActor.
 	 */
@@ -155,12 +124,9 @@ public class PhysicsWorld extends World
 		a.setVelocity(a.getVelocity().scale(friction));
 	}
 
-	/**
-	 * Return the size of the world.
-	 */
-	public Vector getSize() {
-		return new Vector(getWidth(), getHeight());
-	}
+	/*******************************************************************
+	 * Methods that allow reactions on collisions
+	 *******************************************************************/
 
 	/**
 	 * Allow a DynamicActor to act on various kinds of collisions.
@@ -197,6 +163,10 @@ public class PhysicsWorld extends World
 			a.handleIntersection(b);
 		}
 	}
+
+	/*******************************************************************
+	 * Methods that unstick DynamicActors from each other
+	 *******************************************************************/
 
 	/**
 	 * Unstick a DynamicActor from the walls and other ShapeActors.
@@ -244,5 +214,51 @@ public class PhysicsWorld extends World
 		Vector v1 = shape.size().scale(0.5);
 		Vector v2 = getSize().subtract(v1);
 		a.setLocation(a.getLocation().clamp(v1, v2));
+	}
+
+	/*******************************************************************
+	 * Getters and setters
+	 *******************************************************************/
+
+	public void setGravity(Vector v) {
+		gravity = v;
+	}
+
+	/**
+	 * Set gravity to a vertical vector. (For easier manipulation in Greenfoot.)
+	 */
+	public void setDownwardsGravity(double g) {
+		gravity = new Vector(0, g);
+	}
+
+	public Vector getGravity() {
+		return gravity;
+	}
+
+	/**
+	 * Friction getter and setters.
+	 */
+	public void setFriction(double fric) {
+		friction = fric;
+	}
+	public Double getFriction() {
+		return friction;
+	}
+	public void clearFriction() {
+		friction = null;
+	}
+
+	/**
+	 * Set mouse attraction to an amount or null.
+	 */
+	public void setMouseAttraction(Double attraction) {
+		mouseAttraction = attraction;
+	}
+
+	/**
+	 * Get the size of the world.
+	 */
+	public Vector getSize() {
+		return new Vector(getWidth(), getHeight());
 	}
 }
