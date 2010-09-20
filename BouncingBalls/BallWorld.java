@@ -20,10 +20,14 @@ public class BallWorld extends PhysicsWorld
 	/**
 	 * Constructor for objects of class BallWorld.
 	 */
-	public BallWorld() {	
-		super(640, 480);
+	public BallWorld(int width, int height) {	
+		super(width, height);
 		ballRadius = findRadius();
 		r = new Random();
+	}
+	
+	public BallWorld() {
+		this(640, 480);
 	}
 
 	/**

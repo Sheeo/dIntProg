@@ -35,7 +35,7 @@ public class PoolBreak extends BallWorld {
 	private boolean autoMode;
 	
 	public PoolBreak() {
-		super();
+		super(800, 442);
 		setFriction(0.995);
 		reset();
 	}
@@ -120,6 +120,7 @@ public class PoolBreak extends BallWorld {
 	public void addFirstBall() {
 		Vector pos = getSize().scale(new Vector(1.0/16.0, 0.5));
 		white = addBall((int) Math.round(pos.x()), (int) Math.round(pos.y()), 0.0, 0.0);
+		white.setImage("poolballs/16.png");
 		if (!autoMode) {white.enableMouse();}
 	}
 
@@ -130,9 +131,12 @@ public class PoolBreak extends BallWorld {
 		Vector base = getSize().scale(new Vector(0.6, 0.5));
 		Vector dx = Vector.fromPolar(-Math.PI/6, 2*ballRadius);
 		Vector dy = new Vector(0, 2*ballRadius);
+		int bc = 1;
 		for (int i = 0; i < 5; ++i) {
 			for (int j = 0; j <= i; ++j) {
-				addBall(base.add(dx.scale(i)).add(dy.scale(j)));
+				Ball b = addBall(base.add(dx.scale(i)).add(dy.scale(j)));
+				b.setImage(String.format("poolballs/%d.png", bc ));
+				bc++;
 			}
 		}
 	}
