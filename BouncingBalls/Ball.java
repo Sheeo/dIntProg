@@ -133,14 +133,14 @@ public class Ball extends DynamicActor
 	/**
 	 * Handle an elastic Ball-Ball intersection given equal masses.
 	 */
-	public void handleIntersection(Ball b) {
+	public void handleIntersection(Ball other) {
 		/* Find the normal and tangential unit vectors in the intersection. */
 		Vector normal = other.getShape().intersectionNormal(getShape()).unit();
 		Vector tangent = normal.orthogonal();
 
 		/* Find the velocity of us and them. */
 		Vector v1 = getLastVelocity();
-		Vector v2 = b.getLastVelocity();
+		Vector v2 = other.getLastVelocity();
 
 		/* We assume equal masses, so the calculations are a lot simpler. */
 		//double m1 = getMass();
