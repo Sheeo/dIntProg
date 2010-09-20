@@ -11,6 +11,8 @@ public class PhysicsWorld extends World
 {
 	protected Vector gravity;
 	protected Double friction;
+	protected Mouse mouse;
+	protected Double mouseAttraction;
 	public enum Walls {
 		NORTH, EAST, SOUTH, WEST // CSS order
 	};
@@ -22,6 +24,8 @@ public class PhysicsWorld extends World
 	public PhysicsWorld(int width, int height) {
 		super(width, height, 1);
 		setGravity(Vector.zero());
+		mouse = new Mouse();
+		mouseAttraction = null;
 	}
 
 	public void setGravity(Vector v) {
@@ -42,11 +46,16 @@ public class PhysicsWorld extends World
 	public void clearFriction() {
 		friction = null;
 	}
+	public void setMouseAttraction(Double attraction) {
+		mouseAttraction = attraction;
+	}
 	public void act() {
+		mouse.act();
 		List objs = getObjects(DynamicActor.class);
 		for (Object o : objs) {
 			DynamicActor a = (DynamicActor) o;
 			addGravity(a);
+			addMouseAttraction(a);
 			addFriction(a);
 			a.move();
 		}
@@ -61,6 +70,16 @@ public class PhysicsWorld extends World
 	}
 	protected void addGravity(DynamicActor a) {
 		a.setVelocity(a.getVelocity().add(getGravity()));
+	}
+	protected void addMouseAttraction(DynamicActor a) {
+		if (mouseAttraction == null) {
+			return;
+		}
+		Vector mousePos = mouse.getState().position;
+		if (mousePos == null) {
+			return;
+		}
+		a.addVelocity(mousePos.subtract(a.getLocation()).scale(mouseAttraction).setLength(mouseAttraction));
 	}
 	protected void addFriction(DynamicActor a) {
 		if (friction == null) {return;}

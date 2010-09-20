@@ -115,4 +115,8 @@ public class Vector
 	public Vector unit() {
 		return scale(1.0/length());
 	}
+
+	public Vector setLength(double length) {
+		return Vector.fromPolar(angle(), length);
+	}
 }

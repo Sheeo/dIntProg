@@ -2,8 +2,11 @@ import greenfoot.*;
 public class Mouse {
 	private MouseState lastState;
 	private Actor concerning;
+	public Mouse() {
+		this(null);
+	}
 	public Mouse(Actor concerning) {
-		lastState = new MouseState(false, false, false, false, Vector.zero());
+		lastState = new MouseState(false, false, false, false, null);
 		this.concerning = concerning;
 	}
 	public MouseState getState() {
@@ -18,7 +21,7 @@ public class Mouse {
 		Vector position;
 		if (mouseinfo != null) {
 			position = new Vector(mouseinfo.getX(), mouseinfo.getY());
-			moved = position.subtract(lastState.position).length() > 0.5;
+			moved = lastState.position == null || position.subtract(lastState.position).length() > 0.5;
 		} else {
 			position = lastState.position;
 		}
