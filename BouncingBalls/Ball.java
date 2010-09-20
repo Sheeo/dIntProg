@@ -13,14 +13,23 @@ public class Ball extends DynamicActor
 	/**
 	 * The bounds of the ball's position vector.
 	 */
-	public Ball(double velX, double velY) {
+	public Ball(String image, double velX, double velY) {
 		super();
+		if (image != null) {
+			setImage(image);
+		}
 		setVelocity(new Vector(velX, velY));
 		size = new Vector(getImage().getWidth());
 		radius = size.x()/2.0;
 	}
+	public Ball(String image) {
+		this(image,3,2);
+	}
+	public Ball(double velX, double velY) {
+		this(null, velX, velY);
+	}
 	public Ball() {
-		this(3,2);
+		this(null);
 	}
 	Shape getShape() {
 		return new Circle(getLocation(), radius);
