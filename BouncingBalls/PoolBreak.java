@@ -118,7 +118,7 @@ public class PoolBreak extends BallWorld {
 	 * Add the white ball and store it in a property.
 	 */
 	public void addFirstBall() {
-		Vector pos = getSize().scale(new Vector(1.0/16.0, 0.5));
+		Vector pos = getSize().scale(new Vector(1.0/12.0, 0.5));
 		white = addBall((int) Math.round(pos.x()), (int) Math.round(pos.y()), 0.0, 0.0);
 		white.setImage("poolballs/16.png");
 		if (!autoMode) {white.enableMouse();}
