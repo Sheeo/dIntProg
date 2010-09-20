@@ -110,17 +110,14 @@ public class Ball extends DynamicActor
 	}
 
 	public void collidedWithWall(PhysicsWorld.Walls wall) {
-		if (wallDampen == null) {
-			setVelocity(Vector.zero());
-			return;
-		}
+		Vector vel = getVelocity();
 		Vector newvel;
+		double factor = (wallDampen == null) ? 0.0 : wallDampen;
 		if (wall == PhysicsWorld.Walls.NORTH || wall == PhysicsWorld.Walls.SOUTH) {
-			newvel = getVelocity().scale(new Vector(1.0, -1.0));
+			newvel = new Vector(vel.x(), -vel.y()*factor);
 		} else {
-			newvel = getVelocity().scale(new Vector(-1.0, 1.0));
+			newvel = new Vector(-vel.x()*factor, vel.y());
 		}
-		newvel = newvel.scale(wallDampen);
 		setVelocity(newvel);
 	}
 
