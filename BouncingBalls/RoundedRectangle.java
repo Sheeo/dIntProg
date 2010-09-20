@@ -1,5 +1,17 @@
+/**
+ * A RoundedRectangle that can be modelled with a circle of diameter h, a
+ * rectangle of dimensions w*h, and another circle of diameter h. This is not
+ * an arbitrary rounded rectangle!
+ */
 public class RoundedRectangle extends Shape {
+	/**
+	 * Circle radius.
+	 */
 	double r_; double r() {return r_;}
+
+	/**
+	 * Constructor.
+	 */
 	public RoundedRectangle(Vector loc, Vector size) {
 		this(loc.x(), loc.y(), size.x(), size.y());
 	}
@@ -7,6 +19,11 @@ public class RoundedRectangle extends Shape {
 		super(x, y, w, h);
 		r_ = h/2.0;
 	}
+
+	/**
+	 * Reduce the RoundedRectangle to a simpler primitive (a Circle or a
+	 * Rectangle), as applicable when colliding with a given Shape.
+	 */
 	public Shape getPrimitive(Shape s) {
 		if (s instanceof Circle) {return getPrimitive((Circle) s);}
 		return this;
@@ -14,14 +31,18 @@ public class RoundedRectangle extends Shape {
 	public Shape getPrimitive(Circle s) {
 		double x1 = x()-w()/2.0+r();
 		if (s.x() < x1) {
+			/* Return the Circle contained in our left side. */
 			return new Circle(x1, y(), r());
 		}
 		double x2 = x()+w()/2.0-r();
 		if (s.x() > x2) {
+			/* Return the Circle contained in our right side. */
 			return new Circle(x2, y(), r());
 		}
+		/* Return our bounding box. */
 		return new Rectangle(pos(), size());
 	}
+
 	public boolean intersects(Shape s) {
 		if (!super.intersects(s)) {
 			return false;

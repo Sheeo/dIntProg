@@ -1,3 +1,6 @@
+/**
+ * An immobile paddle.
+ */
 public class Paddle extends ShapeActor {
 	private Vector size;
 	public Paddle() {
