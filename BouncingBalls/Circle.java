@@ -21,7 +21,7 @@ public class Circle extends Shape {
 	/**
 	 * Figure out if we intersect some other Shape. First check bounding box
 	 * intersection (Shape.intersects), then check the special cases of
-	 * intersections with other Circles and RoundedRectangles.
+	 * intersections with other Circles.
 	 */
 	public boolean intersects(Shape s) {
 		if (!super.intersects(s)) {
@@ -29,9 +29,6 @@ public class Circle extends Shape {
 		}
 		if (s instanceof Circle) {
 			return intersects((Circle) s);
-		}
-		if (s instanceof RoundedRectangle) {
-			return intersects((RoundedRectangle) s);
 		}
 		return true;
 	}
@@ -42,13 +39,6 @@ public class Circle extends Shape {
 	 */
 	public boolean intersects(Circle c) {
 		return c.pos().subtract(pos()).length() < c.r()+r();
-	}
-
-	/**
-	 * A RoundedRectangle will know if we intersect it.
-	 */
-	public boolean intersects(RoundedRectangle s) {
-		return s.intersects(this);
 	}
 
 	/**

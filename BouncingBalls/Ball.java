@@ -2,15 +2,12 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.*;
 
 /**
- * A Ball that can collide with the four walls of the PhysicsWorld, other
- * balls, ArkanoidBricks and Paddles.
+ * A Ball that can collide with the four walls of the PhysicsWorld and other
+ * balls.
  *
  * Collision is elastic: Walls have infinite inertia, so ball speed is constant
  * during wall collision, unless wallDampen is given, in which case this factor
  * is applied to the normal component of the velocity.
- *
- * Paddles also have infinite inertia, and the Ball collides off the normal of
- * collision.
  *
  * In ball-ball collision, we assume that balls have equal masses, so the
  * normal components of their velocities are simply swapped.
@@ -70,9 +67,6 @@ public class Ball extends DynamicActor
 	 * Handle an intersection with another ShapeActor. Get the shape and handle
 	 * an intersection with a shaped object of infinite inertia.
 	 *
-	 * The special case when we intersect another Ball is handled separately.
-	 * ArkanoidBricks are hit().
-	 *
 	 * @overrides DynamicActor.handleIntersection(ShapeActor)
 	 */
 	public void handleIntersection(ShapeActor other) {
@@ -82,9 +76,6 @@ public class Ball extends DynamicActor
 		}
 		Shape s = other.getShape();
 		handleIntersection(s);
-		if (other instanceof ArkanoidBrick) {
-			((ArkanoidBrick)other).hit();
-		}
 	}
 
 	/**
