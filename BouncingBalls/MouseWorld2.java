@@ -1,3 +1,6 @@
+/**
+ * Another mouse-controlled world. Lots of small balls that follow the mouse.
+ */
 public class MouseWorld2 extends BallWorld {
 	public MouseWorld2() {
 		super();
