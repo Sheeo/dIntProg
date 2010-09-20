@@ -1,7 +1,7 @@
 /**
  * A world that emulates a game of Arkanoid.
  */
-public class Arkanoid extends PhysicsWorld {
+public class ArkanoidWorld extends PhysicsWorld {
 	/**
 	 * There is only one Ball in this Arkanoid game, and we need it for
 	 * reference.
@@ -12,10 +12,11 @@ public class Arkanoid extends PhysicsWorld {
 	 * Create a game of Arkanoid. The field has a fixed size, a fixed number of
 	 * bricks and a fixed number of balls.
 	 */
-	public Arkanoid() {
+	public ArkanoidWorld() {
 		super(416, 512);
 		addBricks();
 		addBall();
+		addPlayerPaddle();
 	}
 
 	/**
@@ -42,12 +43,18 @@ public class Arkanoid extends PhysicsWorld {
 		}
 	}
 
+	private void addPlayerPaddle() {
+		PlayerPaddle paddle = new PlayerPaddle("a", "d");
+		paddle.setImage("paddle_200x30.png");
+		addObject(paddle, 416/2, 480);
+	}
+
 	/**
 	 * Add the Arkanoid ball, and store it in the ball property.
 	 */
 	private void addBall() {
 		ball = new Ball(1, -6);
 		ball.setImage("arkanoidball.png");
-		addObject(ball, 200, 470);
+		addObject(ball, 200, 450);
 	}
 }
