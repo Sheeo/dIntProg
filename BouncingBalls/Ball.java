@@ -74,33 +74,13 @@ public class Ball extends DynamicActor
 	}
 
 	/**
-	 * TODO: Is this still needed?
-	 */
-	private ArrayList<Ball> getIntersectingBalls() {
-		List intersecting = getIntersectingObjects(Ball.class);
-		ArrayList<Ball> balls = new ArrayList<Ball>();
-		for (Object o : intersecting) {
-			Ball b = (Ball) o;
-			double dist = b.getLocation().subtract(getLocation()).length();
-			if (dist > radius*2) {
-				continue;
-			}
-			double nextdist = b.getLocation().add(b.getLastVelocity()).subtract(getLocation().add(getLastVelocity())).length();
-			if (nextdist > dist) {
-				// pretend we don't intersect with the ball
-				continue;
-			}
-			balls.add(b);
-		}
-		return balls;
-	}
-
-	/**
 	 * Handle an intersection with another ShapeActor. Get the shape and handle
 	 * an intersection with a shaped object of infinite inertia.
 	 *
 	 * The special case when we intersect another Ball is handled separately.
 	 * ArkanoidBricks are hit().
+	 *
+	 * @overrides DynamicActor.handleIntersection(ShapeActor)
 	 */
 	public void handleIntersection(ShapeActor other) {
 		if (other instanceof Ball) {
@@ -112,18 +92,6 @@ public class Ball extends DynamicActor
 		if (other instanceof ArkanoidBrick) {
 			((ArkanoidBrick)other).hit();
 		}
-	}
-
-	/**
-	 * Deflect on a ShapeActor's bounding box as if the ShapeActor has infinite
-	 * inertia. Figure out the normal of collision, and mirror our velocity
-	 * around that.
-	 */
-	public void deflectOnBoundingBox(ShapeActor other) {
-		Circle us = (Circle) getShape();
-		Shape them = other.getShape();
-		Vector normal = us.bboxIntersection(them).normal;
-		mirrorVelocity(normal);
 	}
 
 	public void mirrorVelocity(Vector normal) {
@@ -186,6 +154,8 @@ public class Ball extends DynamicActor
 
 	/**
 	 * Handle wall collision given the dampening factor this.wallDampen.
+	 *
+	 * @overrides DynamicActor.collidedWithWall
 	 */
 	public void collidedWithWall(PhysicsWorld.Walls wall) {
 		Vector vel = getVelocity();
