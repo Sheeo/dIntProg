@@ -35,7 +35,7 @@ public class PoolBreak extends BallWorld {
 	private boolean autoMode;
 	
 	public PoolBreak() {
-		super();
+		super(800, 442);
 		setFriction(0.995);
 		reset();
 	}
