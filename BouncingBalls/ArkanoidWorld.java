@@ -1,9 +1,10 @@
-public class Arkanoid extends PhysicsWorld {
+public class ArkanoidWorld extends PhysicsWorld {
 	private Ball ball;
-	public Arkanoid() {
+	public ArkanoidWorld() {
 		super(416, 512);
 		addBricks();
 		addBall();
+		addPlayerPaddle();
 	}
 	private void addBricks() {
 		String[] colors = {"lime", "purple", "blue", "yellow", "red", "gray"};
@@ -17,9 +18,14 @@ public class Arkanoid extends PhysicsWorld {
 			y += ArkanoidBrick.height;
 		}
 	}
+	private void addPlayerPaddle() {
+		PlayerPaddle paddle = new PlayerPaddle("a", "d");
+		paddle.setImage("paddle_200x30.png");
+		addObject(paddle, 416/2, 480);
+	}
 	private void addBall() {
 		ball = new Ball(1, -6);
 		ball.setImage("arkanoidball.png");
-		addObject(ball, 200, 470);
+		addObject(ball, 200, 450);
 	}
 }
