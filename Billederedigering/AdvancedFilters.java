@@ -107,6 +107,29 @@ public class AdvancedFilters
 	}
 	
 	/**
+	 * Scale the image by factor
+	 * Important: Cannot enlarge image!
+	 *
+	 * @param factor Scale by this factor
+	 */
+	public void scale(double factor)
+	{
+		if(factor >= 1)
+			return;
+		Image scaledImage = new Image((int)Math.round(image_.getWidth()*factor), (int)Math.round(image_.getHeight()*factor), "Scaled image");
+		
+		for(int i = 0; i < scaledImage.getWidth(); i++)
+		{
+			for(int j = 0; j < scaledImage.getHeight(); j++)
+			{
+				scaledImage.getPixel(i,j).setValue(image_.getPixel((int)Math.round(i/factor), (int)Math.round(j/factor)).getValue());
+			}
+		}
+		image_=scaledImage;
+		image_.pixelsUpdated();
+	}
+	
+	/**
 	 * Returns average value of neighbouring pixels
 	 */
 	private int average(List<Pixel> pixels)
