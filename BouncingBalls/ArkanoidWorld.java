@@ -43,10 +43,13 @@ public class ArkanoidWorld extends PhysicsWorld {
 		}
 	}
 
+	/**
+	 * Add the player's paddle.
+	 */
 	private void addPlayerPaddle() {
 		PlayerPaddle paddle = new PlayerPaddle("a", "d");
 		paddle.setImage("paddle_200x30.png");
-		addObject(paddle, 416/2, 480);
+		addObject(paddle, getWidth()/2, getHeight()-32);
 	}
 
 	/**
