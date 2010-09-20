@@ -107,12 +107,12 @@ public class AdvancedFilters
 	}
 	
 	/**
-	 * Scale the image by factor
+	 * Resize the image by factor
 	 * Important: Cannot enlarge image!
 	 *
 	 * @param factor Scale by this factor
 	 */
-	public void scale(double factor)
+	public void resize(double factor)
 	{
 		if(factor >= 1)
 			return;
@@ -127,6 +127,18 @@ public class AdvancedFilters
 		}
 		image_=scaledImage;
 		image_.pixelsUpdated();
+	}
+	
+	/**
+	 * Gauss-blur the image before scaling
+	 * Important: Cannot enlarge image!
+	 *
+	 * @param factor Scale by this factor
+	 */
+	public void gaussianResize(double factor)
+	{
+		gaussianBlur();
+		resize(factor);
 	}
 	
 	/**

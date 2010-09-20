@@ -35,11 +35,24 @@ public class TestDriver
 		filter.gaussianBlur();
 	}
 	
-	public static void testScale()
+	public static void testResize()
 	{
 		Image i = new Image("strand.jpg");
 		AdvancedFilters filter = new AdvancedFilters(i);
-		filter.scale(0.5);
+		filter.resize(0.5);
+	}
+	
+	public static void testGaussianResize()
+	{
+		Image i = new Image("strand.jpg");
+		AdvancedFilters filter = new AdvancedFilters(i);
+		filter.gaussianResize(0.5);
+	}
+
+	public static void compareResizes()
+	{
+		testResize();
+		testGaussianResize();
 	}
 	
 	/* Was used to test the G-function on AdvancedFilters
