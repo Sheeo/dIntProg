@@ -1,3 +1,6 @@
+/**
+ * A world containing a ball which can be manipulated act-time using the mouse.
+ */
 public class MouseWorld extends PhysicsWorld {
 	public MouseWorld() {
 		super(640, 480);

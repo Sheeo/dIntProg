@@ -1,3 +1,7 @@
+/**
+ * A world containing a player controlled paddle and a bunch of balls. Mostly
+ * for collision handling testing.
+ */
 public class PaddleWorld extends BallWorld {
 	public PaddleWorld() {
 		super();
