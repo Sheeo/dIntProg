@@ -10,6 +10,8 @@ import java.util.*;
 public class Ball extends DynamicActor
 {
 	final double radius;
+	protected Double wallDampen;
+	protected Double ballDampen;
 	/**
 	 * The bounds of the ball's position vector.
 	 */
@@ -18,6 +20,7 @@ public class Ball extends DynamicActor
 		if (image != null) {
 			setImage(image);
 		}
+		wallDampen = ballDampen = 1.0;
 		setVelocity(new Vector(velX, velY));
 		size = new Vector(getImage().getWidth());
 		radius = size.x()/2.0;
@@ -90,7 +93,13 @@ public class Ball extends DynamicActor
 
 		//double v1np = v1n*(m1-m2)/(m1+m2)+2.0*m2*v2n/(m1+m2);
 		double v1np = v2n; // for m1 = m2
-		addVelocity(normal.scale(v1np).add(tangent.scale(v1t)).subtract(v1));
+		Vector bounce;
+		if (ballDampen == null) {
+			bounce = tangent.scale(v1t).subtract(v1);
+		} else {
+			bounce = normal.scale(v1np*ballDampen).add(tangent.scale(v1t)).subtract(v1);
+		}
+		addVelocity(bounce);
 	}
 
 	public void handleIntersection(Shape s) {
@@ -101,10 +110,25 @@ public class Ball extends DynamicActor
 	}
 
 	public void collidedWithWall(PhysicsWorld.Walls wall) {
-		if (wall == PhysicsWorld.Walls.NORTH || wall == PhysicsWorld.Walls.SOUTH) {
-			setVelocity(getVelocity().scale(new Vector(1.0, -1.0)));
-		} else {
-			setVelocity(getVelocity().scale(new Vector(-1.0, 1.0)));
+		if (wallDampen == null) {
+			setVelocity(Vector.zero());
+			return;
 		}
+		Vector newvel;
+		if (wall == PhysicsWorld.Walls.NORTH || wall == PhysicsWorld.Walls.SOUTH) {
+			newvel = getVelocity().scale(new Vector(1.0, -1.0));
+		} else {
+			newvel = getVelocity().scale(new Vector(-1.0, 1.0));
+		}
+		newvel = newvel.scale(wallDampen);
+		setVelocity(newvel);
+	}
+
+	public void setWallDampen(Double d) {
+		wallDampen = d;
+	}
+
+	public void setBallDampen(Double d) {
+		ballDampen = d;
 	}
 }
