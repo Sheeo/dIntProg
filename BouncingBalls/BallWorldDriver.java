@@ -1,3 +1,7 @@
+/**
+ * A simple BallWorld driver, since the default BallWorld doesn't do so much.
+ * Add some balls, set some gravity, set some friction.
+ */
 public class BallWorldDriver extends BallWorld {
 	public BallWorldDriver() {
 		super();
