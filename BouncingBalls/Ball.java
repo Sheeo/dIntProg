@@ -67,13 +67,6 @@ public class Ball extends DynamicActor
 	}
 
 	/**
-	 * A Ball is circular.
-	 */
-	Shape getShape() {
-		return new Circle(getLocation(), radius);
-	}
-
-	/**
 	 * Handle an intersection with another ShapeActor. Get the shape and handle
 	 * an intersection with a shaped object of infinite inertia.
 	 *
@@ -92,10 +85,6 @@ public class Ball extends DynamicActor
 		if (other instanceof ArkanoidBrick) {
 			((ArkanoidBrick)other).hit();
 		}
-	}
-
-	public void mirrorVelocity(Vector normal) {
-		setVelocity(getVelocity().mirror(normal));
 	}
 
 	/**
@@ -167,6 +156,21 @@ public class Ball extends DynamicActor
 			newvel = new Vector(-vel.x()*factor, vel.y());
 		}
 		setVelocity(newvel);
+	}
+
+	/***************************************************************
+	 * Getters and setters
+	 ***************************************************************/
+
+	public void mirrorVelocity(Vector normal) {
+		setVelocity(getVelocity().mirror(normal));
+	}
+
+	/**
+	 * A Ball is circular.
+	 */
+	Shape getShape() {
+		return new Circle(getLocation(), radius);
 	}
 
 	public void setWallDampen(Double d) {
