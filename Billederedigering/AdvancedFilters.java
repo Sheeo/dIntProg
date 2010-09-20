@@ -13,11 +13,14 @@ public class AdvancedFilters
 	private Image image_;
 	
 	private double sigma_;
-
+	
+	private int travelDistance_;
+	
 	public AdvancedFilters(Image image)
 	{
 		image_ = image;
 		sigma_ = 0.84089642;
+		travelDistance_ = 3;
 	}
 
 	/**
@@ -73,13 +76,15 @@ public class AdvancedFilters
 	 */
 	public void blur()
 	{
+		Image blurredImage = new Image(image_.getWidth(), image_.getHeight(), "Blurred image");
 		for(int i = 0; i < image_.getWidth(); i++)
 		{
 			for(int j = 0; j < image_.getHeight(); j++)
 			{
-				image_.getPixel(i,j).setValue( average( image_.getNeighbours(i,j) ) );
+				blurredImage.getPixel(i,j).setValue( average( image_.getNeighbours(i,j) ) );
 			}
 		}
+		image_ = blurredImage;
 		image_.pixelsUpdated();
 	}
 	
@@ -88,7 +93,52 @@ public class AdvancedFilters
 	 */
 	public void gaussianBlur()
 	{
+		Image blurredImage = new Image(image_.getWidth(), image_.getHeight(), "Blurred image");
 		
+		for(int i = 0; i < image_.getWidth(); i++)
+		{
+			for(int j = 0; j < image_.getHeight(); j++)
+			{
+				blurredImage.getPixel(i,j).setValue( gaussianWeighedAverage(i, j) );
+			}
+		}
+		image_ = blurredImage;
+		image_.pixelsUpdated();
+	}
+	
+	/**
+	 * Resize the image by factor
+	 * Important: Cannot enlarge image!
+	 *
+	 * @param factor Scale by this factor
+	 */
+	public void resize(double factor)
+	{
+		if(factor >= 1)
+			return;
+		Image scaledImage = new Image((int)Math.round(image_.getWidth()*factor), (int)Math.round(image_.getHeight()*factor), "Scaled image");
+		
+		for(int i = 0; i < scaledImage.getWidth(); i++)
+		{
+			for(int j = 0; j < scaledImage.getHeight(); j++)
+			{
+				scaledImage.getPixel(i,j).setValue(image_.getPixel((int)Math.round(i/factor), (int)Math.round(j/factor)).getValue());
+			}
+		}
+		image_=scaledImage;
+		image_.pixelsUpdated();
+	}
+	
+	/**
+	 * Gauss-blur the image before scaling
+	 * Important: Cannot enlarge image!
+	 *
+	 * @param factor Scale by this factor
+	 */
+	public void gaussianResize(double factor)
+	{
+		gaussianBlur();
+		resize(factor);
 	}
 	
 	/**
@@ -110,23 +160,25 @@ public class AdvancedFilters
 	private int gaussianWeighedAverage(int i, int j)
 	{
 		int sum = 0;
-		int travelDistance = 3;
-		for(int dI = 0; dI < travelDistance; dI++)
+		for(int dI = -travelDistance_; dI < travelDistance_; dI++)
 		{
-			for(int dJ = 0; dJ < travelDistance; dJ++)
+			for(int dJ = -travelDistance_; dJ < travelDistance_; dJ++)
 			{
-				if(image_.getPixel())
+				if(i+dI > 0 && i+dI < image_.getWidth() && j+dJ > 0 && j+dJ < image_.getHeight())
+				{
+					sum += (image_.getPixel(i+dI, j+dJ).getValue() * G(Math.abs(dI), Math.abs(dJ)));
+				}
 			}
 		}
+		return sum;
 	}
 	
 	/**
 	 * Returns the value of:
-	 * (1/(2*pi*sigma^2))*e^(-u^2+v^2)/(2*sigma^2)
+	 * (1/(2*pi*sigma_^2))*e^(-u^2+v^2)/(2*sigma_^2)
 	 */
 	private double G(int u, int v)
 	{
-		// Using very explicit parantheses here
 		return (1/(2* Math.PI * ( Math.pow(sigma_,2) ) ) ) * Math.pow(Math.E, -(Math.pow(u, 2) + Math.pow(v, 2)) / (2 * Math.pow(sigma_,2)) );
 	}
 }
