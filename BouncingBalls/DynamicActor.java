@@ -3,7 +3,10 @@ public abstract class DynamicActor extends ShapeActor {
 	private Vector vel;
 	private Vector lastVel;
 	private boolean acceptMouse;
+	protected Mouse mouse;
+	protected Vector heldOffset;
 	public DynamicActor() {
+		mouse = new Mouse(this);
 		vel = Vector.zero();
 	}
 	public boolean getMouseEnabled() {return acceptMouse;}
@@ -34,33 +37,17 @@ public abstract class DynamicActor extends ShapeActor {
 	public void handleIntersection(ShapeActor other) {
 	}
 
-	protected Vector heldOffset;
-	protected Vector lastKnownMouse;
 	protected void handleMouse() {
-		MouseInfo mouseinfo = Greenfoot.getMouseInfo();
-		Vector mouse = (mouseinfo == null) ? ((lastKnownMouse == null) ? Vector.zero() : lastKnownMouse) : new Vector(mouseinfo.getX(), mouseinfo.getY());
-		lastKnownMouse = mouse;
-		if (heldOffset == null) {
-			if (Greenfoot.mousePressed(this)) {
-				onMousePressed(mouse);
-			}
-			return;
+		mouse.act();
+		MouseState state = mouse.getState();
+		Vector mouse = state.position;
+		if (state.down) {
+			onMousePressed(mouse);
+		} else if (state.up) {
+			onMouseReleased();
+		} else {
+			onMouseMoved(mouse);
 		}
-		if(System.getProperty("os.name").equals("Mac OS X"))
-		{
-			if (Greenfoot.mouseClicked(null) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 1)) {
-				onMouseReleased();
-				return;
-			}
-		}
-		else
-		{
-			if (Greenfoot.mouseClicked(this) || mouseinfo != null && (mouseinfo.getActor() != this || mouseinfo.getButton() != 0)) {
-				onMouseReleased();
-				return;
-			}
-		}
-		onMouseMoved(mouse);
 	}
 	protected void onMousePressed(Vector mouse) {
 		heldOffset = mouse.subtract(getLocation());
@@ -70,6 +57,9 @@ public abstract class DynamicActor extends ShapeActor {
 		heldOffset = null;
 	}
 	protected void onMouseMoved(Vector mouse) {
+		if (heldOffset == null) {
+			return;
+		}
 		Vector moveTo = mouse.subtract(heldOffset);
 		Vector newVel = moveTo.subtract(getLocation());
 		//double len = newVel.length();
