@@ -8,6 +8,8 @@ public class MouseWorld2 extends BallWorld {
 	}
 	public Ball addBall(int x, int y, double vX, double vY) {
 		Ball b = new Ball("ball_8px.png", vX, vY);
+		b.setWallDampen(null);
+		b.setBallDampen(null);
 		addObject(b, x, y);
 		return b;
 	}
