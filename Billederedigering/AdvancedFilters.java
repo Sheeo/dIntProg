@@ -11,10 +11,13 @@ public class AdvancedFilters
 {
 
 	private Image image_;
+	
+	private double sigma_;
 
 	public AdvancedFilters(Image image)
 	{
 		image_ = image;
+		sigma_ = 0.84089642;
 	}
 
 	/**
@@ -80,6 +83,9 @@ public class AdvancedFilters
 		image_.pixelsUpdated();
 	}
 	
+	/**
+	 * Blurs the image using gaussian distribution
+	 */
 	public void gaussianBlur()
 	{
 		
@@ -99,12 +105,20 @@ public class AdvancedFilters
 	}
 	
 	/**
+	 * Returns the gaussian-weighed average of neighbouring pixels
+	 */
+	private int gaussianWeighedAverage(int i, int j)
+	{
+		
+	}
+	
+	/**
 	 * Returns the value of:
 	 * (1/(2*pi*sigma^2))*e^(-u^2+v^2)/(2*sigma^2)
 	 */
-	private double G(int u, int v, double sigma)
+	private double G(int u, int v)
 	{
 		// Using very explicit parantheses here
-		return (1/(2* Math.PI * ( Math.pow(sigma,2) ) ) ) * Math.pow(Math.E, -(Math.pow(u, 2) + Math.pow(v, 2)) / (2 * Math.pow(sigma,2)) );
+		return (1/(2* Math.PI * ( Math.pow(sigma_,2) ) ) ) * Math.pow(Math.E, -(Math.pow(u, 2) + Math.pow(v, 2)) / (2 * Math.pow(sigma_,2)) );
 	}
 }
