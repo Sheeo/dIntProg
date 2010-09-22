@@ -37,16 +37,23 @@ public abstract class Shape {
 	}
 
 	/**
-	 * Find out if we intersect the walls of the PhysicsWorld given by some size.
+	 * Find out if we intersect the walls of the PhysicsWorld given by some size and an offset.
 	 * By default, do bounding box intersection detection.
 	 */
-	public EnumSet<PhysicsWorld.Walls> wallIntersection(Vector size) {
+	public EnumSet<PhysicsWorld.Walls> wallIntersection(Vector size, Vector offset) {
 		EnumSet<PhysicsWorld.Walls> res = EnumSet.noneOf(PhysicsWorld.Walls.class);
-		if (x()-w()/2 < 0) res.add(PhysicsWorld.Walls.WEST);
-		if (y()-h()/2 < 0) res.add(PhysicsWorld.Walls.NORTH);
+		if (x()-w()/2 < offset.x()) res.add(PhysicsWorld.Walls.WEST);
+		if (y()-h()/2 < offset.y()) res.add(PhysicsWorld.Walls.NORTH);
 		if (x()+w()/2 > size.x()) res.add(PhysicsWorld.Walls.EAST);
 		if (y()+h()/2 > size.y()) res.add(PhysicsWorld.Walls.SOUTH);
 		return res;
+	}
+	
+	/**
+	 * Find out if we intersect the walls of the PhysicsWorld given by some size.
+	 */
+	public EnumSet<PhysicsWorld.Walls> wallIntersection(Vector size) {
+		return wallIntersection(size, new Vector(0,0));
 	}
 
 	/**
