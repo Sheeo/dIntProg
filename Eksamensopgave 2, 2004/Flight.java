@@ -19,7 +19,10 @@ public class Flight
 	
 	public void addLuggage(Luggage l)
 	{
-		luggage.add(l);
+		if(availableLoadCapacity() > l.getWeight())
+		{
+			luggage.add(l);
+		}
 	}
 	
 	public void removeLuggage(Luggage l)
@@ -32,12 +35,17 @@ public class Flight
 	}
 	
 	int totalLoad() {
-		return 50;
+		int s = 0;
+		for(Luggage l : luggage)
+		{
+			s += l.getWeight();
+		}
+		return s;
 	}
 
 	public String toString()
 	{
-		String format = "%s: %s - %s (C: %d kg)";
-		return String.format(format, flightNumber, departure, destination, totalLoadCapacity);
+		String format = "%s: %s - %s (C: %d kg; A: %d kg)";
+		return String.format(format, flightNumber, departure, destination, totalLoadCapacity, availableLoadCapacity());
 	}
 }
