@@ -69,9 +69,7 @@ public class PhysicsWorld extends World
 		mouse.act();
 
 		/* Iterate through all objects, apply acceleration and make them move. */
-		List objs = getObjects(DynamicActor.class);
-		for (Object o : objs) {
-			DynamicActor a = (DynamicActor) o;
+		for (DynamicActor a : (List<DynamicActor>) getObjects(DynamicActor.class)) {
 			addGravity(a);
 			addMouseAttraction(a);
 			addFriction(a);
@@ -79,14 +77,12 @@ public class PhysicsWorld extends World
 		}
 
 		/* Allow each object to react on collisions. */
-		for (Object o : objs) {
-			DynamicActor a = (DynamicActor) o;
+		for (DynamicActor a : (List<DynamicActor>) getObjects(DynamicActor.class)) {
 			checkCollisions(a);
 		}
 
 		/* Unstick the objects from each other and from the walls. */
-		for (Object o : objs) {
-			DynamicActor a = (DynamicActor) o;
+		for (DynamicActor a : (List<DynamicActor>) getObjects(DynamicActor.class)) {
 			fixCollisions(a);
 		}
 	}
@@ -133,6 +129,7 @@ public class PhysicsWorld extends World
 	 */
 	protected void checkCollisions(DynamicActor a) {
 		checkWallCollisions(a);
+		if (a.getWorld() == null) return;
 		checkActorCollisions(a);
 	}
 
@@ -161,6 +158,7 @@ public class PhysicsWorld extends World
 		}
 		for (ShapeActor b : intersecting) {
 			a.handleIntersection(b);
+			if (a.getWorld() == null) return;
 		}
 	}
 
@@ -198,7 +196,6 @@ public class PhysicsWorld extends World
 			} else {
 				/* The other actor is static, so move us all the way out */
 				double dist = i.amount;
-				System.out.println(dist);
 				Vector d = b.getLocation().subtract(a.getLocation());
 				d = d.scale(dist/d.length());
 				a.setLocation(a.getLocation().add(d));
