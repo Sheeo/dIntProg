@@ -7,12 +7,13 @@ public class PongBall extends Ball {
 		Vector normal = s.intersectionNormal(getShape());
 		if (null != normal) {
 			mirrorVelocity(normal.orthogonal());
-			setVelocity(getVelocity().scale(1.05));
+			setVelocity(getVelocity());
 		}
 	}
 
 	public void collidedWithWall(PhysicsWorld.Walls wall) {
 		if (wall == PhysicsWorld.Walls.NORTH || wall == PhysicsWorld.Walls.SOUTH) {
+			((PongWorld)getWorld()).pongScore(wall);
 			getWorld().removeObject(this);
 			return;
 		}
