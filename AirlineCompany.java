@@ -40,8 +40,17 @@ public class AirlineCompany {
 	}
 
 	public void printPlanes() {
-		ArrayList<Plane> copy = planes.clone();
-		// Todo: implement comparator
+		ArrayList<Plane> copy = (ArrayList)planes.clone();
+		Collections.sort(copy, new Comparator<Plane>() {
+			public int compare(Plane o1, Plane o2) {
+				int cmp = o1.getCapacity()-o2.getCapacity();
+				if(cmp == 0)
+				{
+					cmp = o1.getName().compareTo(o2.getName());
+				}
+				return cmp;
+			}
+		});
 		for(Plane p : copy) {
 			System.out.println(p.toString());
 		}

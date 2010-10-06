@@ -21,4 +21,8 @@ public class Plane {
 		return String.format("%s, %d, %d", name, capacity, range);
 	}
 
+	public String getName() {
+		return name;
+	}
+
 }
